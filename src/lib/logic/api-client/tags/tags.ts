@@ -47,9 +47,9 @@ export const getTagDetails = async (
 
 	let url: URL;
 	if (userId && apiKey) {
-		url = new URL(`${R34_API_URL}&s=comment&q=index&json=1&api_key=${apiKey}&user_id=${userId}`);
+		url = new URL(`${R34_API_URL}&s=tag&q=index&limit=1&api_key=${apiKey}&user_id=${userId}`);
 	} else {
-		url = new URL(`${API_URL}&s=comment&q=index&json=1`, BASE_URL());
+		url = new URL(`${API_URL}&s=tag&q=index&limit=1`, BASE_URL());
 	}
 	url.searchParams.append('name', name);
 
@@ -64,7 +64,7 @@ export const getTagDetails = async (
 		// Best-effort caching; don't block on failures
 		try {
 			const { addIndexedTag } = await import('$lib/indexeddb/idb');
-			await addIndexedTag(tag);
+			addIndexedTag(tag);
 		} catch {
 			// ignore caching errors
 		}

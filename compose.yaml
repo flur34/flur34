@@ -1,7 +1,7 @@
 services:
   kurosearch:
     container_name: 'kurosearch'
-    restart: on-failure
+    restart: unless-stopped
     image: 'ghcr.io/flurbudurbur/kurosearch:latest'
     ports:
       - '443:443'
