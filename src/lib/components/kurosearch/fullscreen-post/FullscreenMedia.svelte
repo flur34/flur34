@@ -2,7 +2,6 @@
 	import FullscreenVideo from './FullscreenVideo.svelte';
 	import FullscreenImage from './FullscreenImage.svelte';
 	import FullscreenGif from './FullscreenGif.svelte';
-	import { calculateAspectRatio } from '../post/ratio';
 	import FullscreenComic from './FullscreenComic.svelte';
 
 	interface Props {
