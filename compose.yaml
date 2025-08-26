@@ -8,19 +8,11 @@ services:
     cap_add:
       - 'NET_ADMIN'
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
+      - data:/data
+      - config:/config
     env_file:
       - '.env'
-    build:
-      context: .
-      dockerfile: Dockerfile
-      tags:
-        - kurosearch:latest
-        - kurosearch:1.0.0
-        - ghcr.io/flurbudurbur/kurosearch:latest
-        - ghcr.io/flurbudurbur/kurosearch:1.0.0
 
 volumes:
-  caddy_data:
-  caddy_config:
+  data:
+  config:
