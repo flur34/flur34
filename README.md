@@ -25,21 +25,23 @@ Prerequisites:
 
 1. Copy [compose.yaml](./compose.yaml) and [.env](./.env.example) to your project folder
 2. Edit the .env file. Every variable is required!
-3. Run `docker-compose up -d`
+3. Run `docker compose up -d`
 4. Enjoy!
 
 ### Bring your own reverse proxy
 
-> ⚠️ All traffic is sent over TLS. If you specifically require HTTP, modify the [Caddyfile](./Caddyfile).
->
-> > Remove the `tls` line and mount it as a volume so you don't have to rebuild the container.
+> The below instructions only cover the project-specific changes.
+> You need to configure your own reverse proxy.
 
 For users who want to plug this container into an existing reverse proxy, do the following:
 
-- Set `KUROSEARCH_HOST=localhost` (or to whatever your subdomain is.)
-- Set `KUROSEARCH_TLS=internal`
-- Map the port in the `compose.yaml` to a free port on your host.
-- Point your reverse proxy to the port.
+1. Copy the [Caddyfile](./Caddyfile) to your project folder
+   - Replace `{$KUROSEARCH_HOST}` with `:80`
+   - Remove the line with `tls`
+2. Edit the [compose.yaml](./compose.yaml)
+   - set the port mapping to `<your open port>:80`
+3. Point your reverse proxy to the port you chose in step 2
+4. Run `docker compose up -d`
 
 ## Contributing
 
