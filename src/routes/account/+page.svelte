@@ -16,6 +16,7 @@
 	import { StoreKey } from '$lib/store/store-keys';
 	import supertags from '$lib/store/supertags-store';
 	import theme from '$lib/store/theme-store';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	const reset = () => {
 		supertags.reset();
@@ -63,7 +64,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - Account</title>
+	<title>{APP_NAME} - Account</title>
 	<meta name="description" content="All of your account data is available on this page." />
 </svelte:head>
 

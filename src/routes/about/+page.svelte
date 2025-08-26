@@ -6,6 +6,7 @@
 	import IconLink from '$lib/components/pure/icon-link/IconLink.svelte';
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
 	import { onMount } from 'svelte';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	let message = $state('Update');
 
@@ -37,7 +38,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - About</title>
+	<title>{APP_NAME} - About</title>
 	<meta name="description" content="Further information about the website can be found here." />
 </svelte:head>
 

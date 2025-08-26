@@ -7,10 +7,11 @@
 	import SummaryCard from '$lib/components/pure/summary-card/SummaryCard.svelte';
 	import { MODIFIERS_ICONS } from '$lib/logic/tag-modifier-data';
 	import { createModifiedTag, createTag } from '$lib/logic/tag-utils';
+	import { APP_NAME } from '$lib/logic/app-name';
 </script>
 
 <svelte:head>
-	<title>kurosearch - Documentation</title>
+	<title>{APP_NAME} - Documentation</title>
 	<meta
 		name="description"
 		content="Documentation for kurosearch. This page explains how to use the website."

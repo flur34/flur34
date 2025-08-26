@@ -43,6 +43,7 @@
 	import openTagsOnPostClick from '$lib/store/tags-shortcut-store';
 	import TextInput from '$lib/components/pure/input-text/TextInput.svelte';
 	import pageNavigationEnabled from '$lib/store/page-navigation-enabled-store';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	let resetDialog: HTMLDialogElement = $state<HTMLDialogElement>() as HTMLDialogElement;
 
@@ -63,7 +64,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - Preferences</title>
+	<title>{APP_NAME} - Preferences</title>
 	<meta
 		name="description"
 		content="Customize your kurosearch browsing experience however you like."

@@ -15,6 +15,7 @@
 	import { SearchBuilder } from '$lib/logic/search-builder';
 	import apiKey from '$lib/store/api-key-store';
 	import userId from '$lib/store/user-id-store';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	const fetchSuggestions = async (term: string) => {
 		const matchingTags = await getTagSuggestions(term);
@@ -71,7 +72,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - Query Builder</title>
+	<title>{APP_NAME} - Query Builder</title>
 	<meta
 		name="description"
 		content="Test your kurosearch queries. Useful if you already know how to use rule34.xxx"

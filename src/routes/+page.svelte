@@ -25,6 +25,7 @@
 	import pageNavigationEnabled from '$lib/store/page-navigation-enabled-store';
 	import PageNavigation from '$lib/components/kurosearch/page-navigation/PageNavigation.svelte';
 	import PageJump from '$lib/components/kurosearch/page-navigation/PageJump.svelte';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	let loading = $state(false);
 	let error: Error | undefined = $state();
@@ -78,7 +79,7 @@
 		results.resetPosts();
 		nextFocus = 0;
 
-		executeSearch(async () => {
+		await executeSearch(async () => {
 			const page = await createDefaultSearch().withPid(pid).getPage();
 			results.setPage(page, pid);
 		});
@@ -121,7 +122,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - Rule34 Hentai</title>
+	<title>{APP_NAME} - Rule34 Hentai</title>
 	<meta
 		name="description"
 		content="Simple and powerful Rule34 browsing site with a focus on simplicity and user experience."

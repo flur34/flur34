@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test';
+import { APP_NAME } from '$lib/logic/app-name';
 
-// const indexPage = 'https://kurosearch.com';
 const indexPage = 'http://localhost:4173/';
 
 test('index page has expected title', async ({ page }) => {
 	await page.goto(indexPage);
-	await expect(page).toHaveTitle('Kurosearch - Rule34 Hentai');
+	await expect(page).toHaveTitle(APP_NAME + ' - Rule34 Hentai');
 });
 // ... existing code ...
 test('header has expected links', async ({ page }) => {
