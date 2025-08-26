@@ -28,6 +28,8 @@
 
 	const userPhoto: string | undefined = undefined;
 
+	const year = new Date().getFullYear();
+
 	theme.subscribe((value) => {
 		if (browser) {
 			const [accent, theme] = value.split(' ');
@@ -35,7 +37,6 @@
 			document.documentElement.dataset.accent = accent;
 		}
 	});
-	const year = new Date().getFullYear();
 </script>
 
 <svelte:head>
