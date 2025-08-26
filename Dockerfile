@@ -76,10 +76,8 @@ LABEL author=flurbudurbur \
     org.opencontainers.image.source="https://github.com/flurbudurbur/kurosearch" \
     org.opencontainers.image.arch="amd64" \
     org.opencontainers.image.description="A self-contained version of kurosearch.com" \
-    org.opencontainers.image.version="1.0.0-rc.1"
-
-# expose ports for http(s) traffic
-EXPOSE 80 443
+    org.opencontainers.image.version="1.0.0-rc.1" \
+    org.opencontainers.image.authors="flurbudurbur <69259138+flurbudurbur@users.noreply.github.com>"
 
 COPY --from=builder /app/build /srv
 COPY ./Caddyfile /etc/caddy/Caddyfile

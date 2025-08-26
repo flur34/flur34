@@ -8,6 +8,14 @@
 
 A Project that aims to containerize Kurosearch to jork it in privacy. Self-host it if you want!
 
+## Tag explanation
+
+| Tag            | Description                         |
+| :------------- | :---------------------------------- |
+| `latest`       | Latest stable release (recommended) |
+| `canary`       | Latest development build            |
+| `x.y.z[-rc.n]` | Specific release                    |
+
 ## Getting Started
 
 Prerequisites:
