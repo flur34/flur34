@@ -74,9 +74,9 @@ FROM caddy:2.10.0-alpine AS server
 LABEL author=flurbudurbur \
     org.opencontainers.image.title="kurosearch" \
     org.opencontainers.image.source="https://github.com/flurbudurbur/kurosearch" \
-    org.opencontainers.image.description="A self-hosted, self-contaied version of kurosearch.com" \
-    org.opencontainers.image.version="1.0.0-rc.1" \
-    org.opencontainers.image.licenses="MIT"
+    org.opencontainers.image.arch="amd64" \
+    org.opencontainers.image.description="A self-contained version of kurosearch.com" \
+    org.opencontainers.image.version="1.0.0-rc.1"
 
 # expose ports for http(s) traffic
 EXPOSE 80 443
