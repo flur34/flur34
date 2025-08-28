@@ -1,12 +1,15 @@
 services:
-  kurosearch:
-    container_name: 'kurosearch'
+  flur34:
+    container_name: 'flur34'
     restart: unless-stopped
     image: 'ghcr.io/flurbudurbur/kurosearch:latest'
     ports:
       - '443:443'
+    cap_drop:
+      - 'ALL'
     cap_add:
       - 'NET_ADMIN'
+      - 'NET_BIND_SERVICE'
     volumes:
       - data:/data
       - config:/config

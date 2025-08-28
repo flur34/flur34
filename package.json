@@ -1,7 +1,22 @@
 {
 	"name": "kurosearch",
-	"version": "1.0.0-rc.5",
+	"version": "1.0.0-rc.6",
 	"private": true,
+	"license": "proprietary",
+	"author": {
+		"name": "flurbudurbur"
+	},
+	"contributors": [
+		"kurozenzen"
+	],
+	"maintainers": [
+		"flurbudurbur",
+		"kuronzenzen"
+	],
+	"homepage": "https://r34.flur.dev",
+	"bugs": "https://github.com/flurbudurbur/kurosearch/issues",
+	"repository": "https://github.com/flurbudurbur/kurosearch",
+	"readme": "README.md",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -51,7 +66,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^12.1.0"
+		"firebase": "^12.1.0",
+		"smol-toml": "^1.4.2"
 	},
 	"packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
 }

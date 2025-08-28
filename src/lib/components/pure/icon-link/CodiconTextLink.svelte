@@ -22,6 +22,7 @@
 		color: currentColor;
 		font-size: var(--text-size-small);
 		vertical-align: middle;
+		text-transform: capitalize;
 	}
 
 	a::before {

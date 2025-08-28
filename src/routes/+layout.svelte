@@ -72,7 +72,7 @@
 
 <footer>
 	<section class="footer">
-		<span class="source-links">
+		<span class="stacked-tags">
 			<CodiconTextLink
 				title="Source Code"
 				href="https://github.com/kurozenzen/kurosearch"
@@ -91,12 +91,20 @@
 
 		<span class="copyright">&copy; {year} kurozenzen</span>
 
-		<CodiconTextLink
-			title="About"
-			href={resolve('/about')}
-			icon="codicon codicon-info"
-			label="About"
-		/>
+		<span class="stacked-tags">
+			<CodiconTextLink
+				title="About"
+				href={resolve('/about')}
+				icon="codicon codicon-info"
+				label="About"
+			/>
+			<CodiconTextLink
+				title="Instances"
+				href={resolve('/instances')}
+				icon="codicon codicon-server"
+				label="Instances"
+			/>
+		</span>
 	</section>
 	<p>
 		I do not own the rights to Helheim Lynx and this site is in no way endorsed by, affiliated with,
@@ -114,7 +122,7 @@
 		overflow-y: scroll;
 	}
 
-	.source-links {
+	.stacked-tags {
 		display: flex;
 		flex-direction: column;
 		gap: 0.1rem;

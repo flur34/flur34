@@ -34,7 +34,8 @@ const config = {
 					'https://apis.google.com',
 					'https://*.rule34.xxx',
 					'https://*.googleapis.com',
-					'https://api.github.com'
+					'https://api.github.com',
+					'https://healthcheck.flur.dev'
 				],
 				'img-src': ['self', 'data:', 'https://*.rule34.xxx', 'https://*.googleusercontent.com'],
 				'media-src': ['self', 'https://*.rule34.xxx']

@@ -1,0 +1,21 @@
+version = '1.0.0'
+url = 'https://flur.dev/instances.toml'
+[[instance]]
+name = 'kurosearch'
+country = 'United States'
+description = 'The official kurosearch website'
+source = 'https://github.com/kurozenzen/kurosearch'
+[instance.details]
+version = 'N/A'
+last_check = '1756376211'
+uptime = 100
+
+[[instance]]
+name = 'flur34'
+country = 'United States'
+description = "The original kurosearch container project"
+source = 'https://github.com/flurbudurbur/kurosearch'
+[instance.details]
+version = '1.0.0-rc.6'
+last_check = '1756386211'
+uptime = 100

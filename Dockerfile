@@ -3,6 +3,7 @@
 # Common args
 ARG PNPM_VERSION=10.15.0
 ARG PLAYWRIGHT_BROWSERS="chromium"
+ARG PROJECT_VERSION=1.0.0-rc.6
 
 FROM node:lts-alpine AS node-tests
 WORKDIR /app
@@ -38,6 +39,9 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
 FROM node:lts-bookworm AS playwright-tests
 WORKDIR /app
 
+ARG PLAYWRIGHT_BROWSERS
+ARG PNPM_VERSION
+
 ENV CI=true \
     NODE_ENV=test \
     PNPM_HOME=/root/.local/share/pnpm \
@@ -59,6 +63,8 @@ RUN pnpm run test:integration
 FROM node:lts-alpine AS builder
 WORKDIR /app
 
+ARG PNPM_VERSION
+
 ENV NODE_ENV=production \
     PNPM_HOME=/root/.local/share/pnpm \
     PATH="/root/.local/share/pnpm:$PATH"
@@ -71,13 +77,19 @@ COPY --from=playwright-tests /app ./
 RUN pnpm run build
 
 FROM caddy:2.10.0-alpine AS server
+ARG PROJECT_VERSION
 LABEL author=flurbudurbur \
     org.opencontainers.image.title="kurosearch" \
+    org.opencontainers.image.description="A self-contained version of kurosearch.com" \
+    org.opencontainers.image.version=${PROJECT_VERSION} \
     org.opencontainers.image.source="https://github.com/flurbudurbur/kurosearch" \
     org.opencontainers.image.arch="amd64" \
-    org.opencontainers.image.description="A self-contained version of kurosearch.com" \
-    org.opencontainers.image.version="1.0.0-rc.5" \
     org.opencontainers.image.authors="flurbudurbur <69259138+flurbudurbur@users.noreply.github.com>"
+
+ENV CADDY_ADMIN=off
+
+RUN chown -R 1000:1000 /srv /etc/caddy
+USER 1000:1000
 
 COPY --from=builder /app/build /srv
 COPY ./Caddyfile /etc/caddy/Caddyfile
