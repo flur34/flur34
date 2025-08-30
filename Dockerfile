@@ -3,7 +3,7 @@
 # Common args
 ARG PNPM_VERSION=10.15.0
 ARG PLAYWRIGHT_BROWSERS="chromium"
-ARG PROJECT_VERSION=1.0.0-rc.6
+ARG PROJECT_VERSION=1.0.0-rc.7
 
 FROM node:lts-alpine AS node-tests
 WORKDIR /app

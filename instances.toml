@@ -16,6 +16,6 @@ country = 'United States'
 description = "The original kurosearch container project"
 source = 'https://github.com/flurbudurbur/kurosearch'
 [instance.details]
-version = '1.0.0-rc.6'
+version = '1.0.0-rc.7'
 last_check = '1756386211'
 uptime = 100

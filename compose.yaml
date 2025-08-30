@@ -4,7 +4,9 @@ services:
     restart: unless-stopped
     image: 'ghcr.io/flurbudurbur/kurosearch:latest'
     ports:
+      - '80:80'
       - '443:443'
+      - '443:443/udp' # for http3 support
     cap_drop:
       - 'ALL'
     cap_add:

@@ -107,6 +107,8 @@
 				</li>
 			{/each}
 		</ul>
+	{:else if conflictingTags.length === 0 && $activeTagsStore.length >= 0}
+		<p>We couldn't connect to Rule34. Sorry...</p>
 	{:else}
 		<p>We couldn't find any posts matching your tags. Sorry...</p>
 	{/if}
@@ -136,57 +138,58 @@
 </section>
 
 <style lang="scss">
-	section {
-		overflow: hidden;
-		background-color: var(--background-1);
-		max-width: 400px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--grid-gap);
-		border-radius: var(--border-radius-large);
-	}
-	img {
-		display: block;
-		object-fit: cover;
-		aspect-ratio: 1231 / 864;
-		max-width: 100%;
-		max-height: 300px;
-	}
+  section {
+    overflow: hidden;
+    background-color: var(--background-1);
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--grid-gap);
+    border-radius: var(--border-radius-large);
+  }
 
-	div {
-		display: flex;
-		gap: var(--grid-gap);
-		padding-block-end: var(--grid-gap);
-	}
+  img {
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 1231 / 864;
+    max-width: 100%;
+    max-height: 300px;
+  }
 
-	ul {
-		display: flex;
-		flex-direction: column;
-		gap: var(--small-gap);
-		padding-inline: var(--small-gap);
-	}
+  div {
+    display: flex;
+    gap: var(--grid-gap);
+    padding-block-end: var(--grid-gap);
+  }
 
-	h6 {
-		font-size: var(--font-size);
-		background-color: #413c26;
-		color: #ffe169;
-		width: 100%;
-		text-align: center;
-		padding: var(--small-gap);
-	}
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+    padding-inline: var(--small-gap);
+  }
 
-	li {
-		background-color: #413c26;
-		color: #ffe169;
-		padding: var(--small-gap);
-		border-radius: var(--border-radius);
-		display: flex;
-		gap: var(--small-gap);
-		align-items: center;
-	}
+  h6 {
+    font-size: var(--font-size);
+    background-color: #413c26;
+    color: #ffe169;
+    width: 100%;
+    text-align: center;
+    padding: var(--small-gap);
+  }
 
-	b {
-		color: #fe8d59;
-	}
+  li {
+    background-color: #413c26;
+    color: #ffe169;
+    padding: var(--small-gap);
+    border-radius: var(--border-radius);
+    display: flex;
+    gap: var(--small-gap);
+    align-items: center;
+  }
+
+  b {
+    color: #fe8d59;
+  }
 </style>

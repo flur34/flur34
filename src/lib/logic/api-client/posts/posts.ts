@@ -34,21 +34,25 @@ export const getPage = async (
 };
 
 export const getCount = async (tags: string, apiKey: string = '', userId: string = '') => {
-	const response = await fetchAbortPrevious(
-		getCountUrl(tags, apiKey, userId),
-		getPageAbortController
-	);
+	try {
+		const response = await fetchAbortPrevious(
+			getCountUrl(tags, apiKey, userId),
+			getPageAbortController
+		);
 
-	throwOnUnexpectedStatus(response);
+		throwOnUnexpectedStatus(response);
+		const text = await response.text();
+		const parser = new DOMParser();
+		const xml = parser.parseFromString(text, 'text/xml');
+		const count = Number(xml.getElementsByTagName('posts')[0].getAttribute('count'));
 
-	const text = await response.text();
-	const parser = new DOMParser();
-	const xml = parser.parseFromString(text, 'text/xml');
-	const count = Number(xml.getElementsByTagName('posts')[0].getAttribute('count'));
+		throwOnInvalidCount(count);
 
-	throwOnInvalidCount(count);
-
-	return count;
+		return count;
+	} catch (error) {
+		console.warn('Failed to get count', error);
+		return 0;
+	}
 };
 
 export const getPost = async (id: number, apiKey: string = '', userId: string = '') => {
