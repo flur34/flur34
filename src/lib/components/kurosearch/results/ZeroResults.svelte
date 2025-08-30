@@ -1,4 +1,6 @@
 <script module lang="ts">
+	import { BLOCKING_GROUP_TAGS } from '$lib/logic/blocking-group-data';
+
 	const validateTags = (
 		activeTags: kurosearch.ModifiedTag[],
 		blockedContent: Record<kurosearch.BlockingGroup, boolean>,
@@ -72,7 +74,6 @@
 <script lang="ts">
 	import notFoundSrc from '$lib/assets/lynxy-chibi-not-found.webp';
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
-	import { BLOCKING_GROUP_TAGS } from '$lib/logic/blocking-group-data';
 	import activeSupertagsStore from '$lib/store/active-supertags-store';
 	import activeTagsStore from '$lib/store/active-tags-store';
 	import blockedContent from '$lib/store/blocked-content-store';
