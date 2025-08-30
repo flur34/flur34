@@ -58,7 +58,6 @@
 	});
 </script>
 
-
 <svelte:head>
 	<title>{APP_NAME} - Instances</title>
 	<meta name="description" content="Hosting instructions for {APP_NAME}" />
