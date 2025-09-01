@@ -100,13 +100,17 @@ const initIdb = async (): Promise<IDBDatabase> => {
 	});
 };
 
-initIdb()
-	.then((db) => {
-		idb = db;
-	})
-	.catch((error) => console.error('Failed to initialize IndexedDB:', error))
-	.then(clean)
-	.catch((error) => console.error('Failed to clean IndexedDB:', error));
+if (typeof indexedDB !== 'undefined') {
+	initIdb()
+		.then((db) => {
+			idb = db;
+		})
+		.catch((error) => console.error('Failed to initialize IndexedDB:', error))
+		.then(clean)
+		.catch((error) => console.error('Failed to clean IndexedDB:', error));
+} else {
+	console.warn('IndexedDB is not available in this environment; skipping initialization.');
+}
 
 export const addIndexedTag = (tag: kurosearch.Tag) => {
 	if (!idb) {

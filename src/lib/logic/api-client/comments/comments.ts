@@ -1,11 +1,12 @@
 import { addIndexedComments, getIndexedComments } from '$lib/indexeddb/idb';
-import { API_URL, BASE_URL, R34_API_URL } from '../url';
+import { parseXml } from '$lib/logic/parse-utils';
 
 export type Comment = {
 	author: string;
 	createdAt: string;
 	content: string;
 };
+
 
 export const getComments = async (postId: number, apiKey: string = '', userId: string = '') => {
 	if (typeof postId !== 'number') {
@@ -17,22 +18,24 @@ export const getComments = async (postId: number, apiKey: string = '', userId: s
 		return indexedComments;
 	}
 
-	let url: URL;
-	if (userId && apiKey) {
-		url = new URL(`${R34_API_URL}&s=comment&q=index&json=1&api_key=${apiKey}&user_id=${userId}`);
-	} else {
-		url = new URL(`${API_URL}&s=comment&q=index&json=1`, BASE_URL());
-	}
+	const API_ENDPOINT = '/api/comments';
+	const url = new URL(
+		`${API_ENDPOINT}`,
+		typeof window !== 'undefined' ? window.location.origin : 'http://localhost'
+	);
 	url.searchParams.append('post_id', String(postId));
+	if (userId && apiKey) {
+		url.searchParams.append('api_key', apiKey);
+		url.searchParams.append('user_id', userId);
+	}
 
 	const response = await fetch(url);
 	if (!response.ok) {
-		throw new Error('Failed to get tag suggestions');
+		throw new Error('Failed to get comments');
 	}
 
 	const text = await response.text();
-	const parser = new DOMParser();
-	const xml = parser.parseFromString(text, 'text/xml');
+	const xml = parseXml(text);
 
 	const comments: Comment[] = [];
 	for (const comment of xml.getElementsByTagName('comment')) {
@@ -41,7 +44,8 @@ export const getComments = async (postId: number, apiKey: string = '', userId: s
 	addIndexedComments(postId, comments);
 
 	return comments;
-};
+}
+
 
 const parseComment = (comment: NamedNodeMap): Comment => {
 	const creator = comment.getNamedItem('creator');

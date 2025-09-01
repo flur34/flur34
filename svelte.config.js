@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import pkg from './package.json' with { type: 'json' };
 
@@ -42,9 +42,11 @@ const config = {
 			}
 		},
 		prerender: {
-			handleHttpError: ({ path, response }) => {
-				if (path.startsWith('/r34')) return;
-				throw new Error(`${response.status} ${path}`);
+			handleHttpError: ({ path, status, response, message }) => {
+				if (path.startsWith('/api')) return;
+				const code = status ?? response?.status;
+				if (code != null) throw new Error(`${code} ${path}`);
+				throw new Error(message ?? `Prerender error at ${path}`);
 			}
 		}
 	}
