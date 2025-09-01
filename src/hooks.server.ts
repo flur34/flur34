@@ -34,9 +34,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const referer = req.headers.get('referer') ?? '';
 		const originOk = !origin || origin.replace(/\/$/, '') === expectedOrigin;
 		const refererOk =
-			!referer ||
-			referer === `${expectedOrigin}/` ||
-			referer.startsWith(`${expectedOrigin}/`);
+			!referer || referer === `${expectedOrigin}/` || referer.startsWith(`${expectedOrigin}/`);
 
 		const allowed =
 			xSKLoad ||

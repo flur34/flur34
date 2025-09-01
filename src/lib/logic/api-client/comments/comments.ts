@@ -7,7 +7,6 @@ export type Comment = {
 	content: string;
 };
 
-
 export const getComments = async (postId: number, apiKey: string = '', userId: string = '') => {
 	if (typeof postId !== 'number') {
 		throw new TypeError('Invalid postId');
@@ -44,8 +43,7 @@ export const getComments = async (postId: number, apiKey: string = '', userId: s
 	addIndexedComments(postId, comments);
 
 	return comments;
-}
-
+};
 
 const parseComment = (comment: NamedNodeMap): Comment => {
 	const creator = comment.getNamedItem('creator');

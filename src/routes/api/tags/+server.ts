@@ -7,9 +7,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	if (isAutocomplete) {
 		// Proxy to autocomplete endpoint (JSON)
 		const q = url.searchParams.get('q') ?? '';
-		const upstream = await fetch(
-			`${R34_API_URL}/autocomplete.php?q=${encodeURIComponent(q)}`
-		);
+		const upstream = await fetch(`${R34_API_URL}/autocomplete.php?q=${encodeURIComponent(q)}`);
 		return new Response(upstream.body, {
 			status: upstream.status,
 			statusText: upstream.statusText,

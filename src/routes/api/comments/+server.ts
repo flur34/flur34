@@ -3,7 +3,6 @@ import { json } from '@sveltejs/kit';
 import { R34_API_URL } from '$lib/logic/api-client/url';
 import { RULE34_API_KEY, RULE34_API_USER } from '$env/static/private';
 
-
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const id = url.searchParams.get('post_id');
 
