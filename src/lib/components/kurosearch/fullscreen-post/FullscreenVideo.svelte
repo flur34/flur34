@@ -9,9 +9,10 @@
 		post: kurosearch.Post;
 		ondetails: () => void;
 		onended?: () => void;
+		startAt?: number;
 	}
 
-	let { post, onended, ondetails }: Props = $props();
+	let { post, onended, ondetails, startAt }: Props = $props();
 
 	let video: HTMLVideoElement;
 
@@ -21,6 +22,12 @@
 	let paused = $state(false);
 	let loading = $state(false);
 	let duration: number = $state(1);
+	let overlayHidden = $state(true);
+
+	const onclick = (e: Event) => {
+		e.stopPropagation();
+		overlayHidden = !overlayHidden;
+	};
 
 	const ontoggleplay = () => {
 		if (video.paused) {
@@ -51,6 +58,9 @@
 	onMount(() => {
 		videoObserver.observe(video);
 		document.addEventListener('keydown', keybinds);
+		if (startAt !== undefined) {
+			video.currentTime = startAt;
+		}
 	});
 	onDestroy(() => {
 		videoObserver.unobserve(video);
@@ -77,10 +87,12 @@
 		e.stopPropagation();
 	}}
 	volume={getVolume()}
+	{onclick}
 >
 </video>
 
 <PostOverlay
+	hidden={overlayHidden}
 	mediaType="video"
 	{paused}
 	{loading}

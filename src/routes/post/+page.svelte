@@ -16,7 +16,7 @@
 	import alwaysLoop from '$lib/store/always-loop-store';
 	import { APP_NAME } from '$lib/logic/app-name';
 
-	let idString = page.url.searchParams.get('id');
+	let idString = $derived(page.url.searchParams.get('id'));
 	let id = $derived(idString ? parseInt(idString) : null);
 </script>
 

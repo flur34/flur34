@@ -16,6 +16,12 @@
 	let media: HTMLImageElement;
 	let paused = $state(true);
 	let loading = $state(false);
+	let overlayHidden = $state(true);
+
+	const onclick = (e: Event) => {
+		e.stopPropagation();
+		overlayHidden = !overlayHidden;
+	};
 	const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=';
 
 	const ontoggleplay = () => {
@@ -55,6 +61,7 @@
 		}}
 		onload={() => (loading = false)}
 		use:observeGif
+		{onclick}
 	/>
 	{#if $gifPreloadEnabled}
 		<img
@@ -64,10 +71,18 @@
 			alt="animated source preload"
 			class="animated-preload"
 			use:observeGif
+			{onclick}
 		/>
 	{/if}
 
-	<PostOverlay mediaType="gif" {onfullscreen} {paused} {loading} {ontoggleplay} />
+	<PostOverlay
+		mediaType="gif"
+		hidden={overlayHidden}
+		{onfullscreen}
+		{paused}
+		{loading}
+		{ontoggleplay}
+	/>
 </div>
 
 <style lang="scss">

@@ -8,7 +8,8 @@
 
 	interface Props {
 		// images / gifs / videos
-		onfullscreen?: () => void;
+		hidden: boolean;
+		onfullscreen?: (currentTime?: number) => void;
 
 		// gifs / videos
 		mediaType: string;
@@ -32,10 +33,9 @@
 		currentTime = $bindable(),
 		duration,
 		ondetails,
-		mediaType
+		mediaType,
+		hidden: desiredHidden = false
 	}: Props = $props();
-
-	let desiredHidden = $state(true);
 
 	let hidden = $derived(desiredHidden && paused === false && loading === false);
 
@@ -44,17 +44,16 @@
 		desiredHidden = true;
 		ontoggleplay?.();
 	};
-
-	const onclick = () => {
-		desiredHidden = !desiredHidden;
-	};
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="overlay" class:hidden {onclick}>
+<div class="overlay" class:hidden>
 	{#if onfullscreen !== undefined}
-		<FullscreenButton onclick={onfullscreen} class="post-overlay-button-fullscreen" />
+		<FullscreenButton
+			onclick={() => onfullscreen(currentTime)}
+			class="post-overlay-button-fullscreen"
+		/>
 	{/if}
 	{#if paused !== undefined && loading !== undefined && ontoggleplay !== undefined}
 		<PlayButton
@@ -98,6 +97,11 @@
 		z-index: var(--z-media-controls);
 
 		transition: opacity var(--default-transition-behaviour);
+		pointer-events: none;
+	}
+
+	.overlay :global(*) {
+		pointer-events: auto;
 	}
 
 	.overlay :global(.post-overlay-button-fullscreen) {

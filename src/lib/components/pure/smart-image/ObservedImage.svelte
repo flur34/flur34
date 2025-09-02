@@ -2,7 +2,15 @@
 	import { observeImage } from '$lib/logic/image-observer';
 	import { clickOnEnter } from '$lib/logic/keyboard-utils';
 
-	let { src, alt, width, height } = $props();
+	interface Props {
+		src: string;
+		alt: string;
+		width: number;
+		height: number;
+		onclick?: () => void;
+	}
+
+	let { src, alt, width, height, onclick } = $props();
 	const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=';
 </script>
 
@@ -19,6 +27,7 @@
 	tabindex="0"
 	onkeydown={clickOnEnter}
 	use:observeImage
+	{onclick}
 />
 
 <style lang="scss">
