@@ -23,10 +23,12 @@ Prerequisites:
 - [Docker](https://docs.docker.com/get-started/)
 - rule34 API credentials
 
-1. Copy [compose.yaml](./compose.yaml) and [.env](./.env.example) to your project folder
-2. Edit the .env file. Every variable is required!
+1. Clone the repository
+   - If storage is a concern, You only need `compose.yaml`, `container/Caddyfile` and `.env`.
+   - Alternatively, you can clone the repo with limited history:
+     - Command: `git clone --depth 1 https://github.com/flurbudurbur/kurosearch.git`
+2. Edit the .env file. Every variable is required! Don't edit the existing ones unless you know what you're doing.
 3. Run `docker compose up -d`
-4. Enjoy!
 
 ### Bring your own reverse proxy
 
@@ -35,21 +37,13 @@ Prerequisites:
 
 For users who want to plug this container into an existing reverse proxy, do the following:
 
-1. Copy the [Caddyfile](container/Caddyfile) to your project folder
-   - Replace `{$KUROSEARCH_HOST}` with `:80`
-   - Remove the line with `tls`
-2. Edit the [compose.yaml](./compose.yaml)
-   - set the port mapping to `<your open port>:80`
-3. Point your reverse proxy to the port you chose in step 2
-4. Run `docker compose up -d`
+1. Remove anything related to Caddy from the `compose.yaml`.
+2. Map the internal port 8080 to your desired host port. All traffic is http.
+3. `docker compose up -d [--remove-orphans]`
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-> ⚠️ Running tests outside the container might fail!
->
-> > This is due to the rewrites in the Caddyfile.
 
 Please make sure to update tests as appropriate.
 
