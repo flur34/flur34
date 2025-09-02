@@ -12,4 +12,3 @@ setPersistence(getAuth(), browserLocalPersistence);
 
 export const signIn = async () => signInWithPopup(getAuth(), googleAuthProvider);
 export const signOut = async () => signOutFirebase(getAuth());
-export const loggedIn = () => getAuth().currentUser !== null;

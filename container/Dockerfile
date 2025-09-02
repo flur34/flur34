@@ -76,7 +76,7 @@ COPY --from=playwright-tests /app ./
 RUN pnpm run build \
     && pnpm --filter=kurosearch deploy --prod /app/prod
 
-FROM gcr.io/distroless/nodejs20-debian12:nonroot AS runtime
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runtime
 
 ARG PROJECT_VERSION
 ARG PNPM_VERSION

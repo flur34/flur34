@@ -9,7 +9,6 @@
 	import IntersectionDetector from '$lib/components/pure/intersection-detector/IntersectionDetector.svelte';
 	import LoadingAnimation from '$lib/components/pure/loading-animation/LoadingAnimation.svelte';
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
-	import { logSearch } from '$lib/logic/firebase/analytics';
 	import { SearchBuilder } from '$lib/logic/search-builder';
 	import activeSupertags from '$lib/store/active-supertags-store';
 	import activeTags from '$lib/store/active-tags-store';
@@ -54,9 +53,7 @@
 		loading = true;
 
 		try {
-			const pid = $results.pageCount;
 			await operation();
-			logSearch(pid).catch(() => {});
 		} catch (e) {
 			error = e as Error;
 			console.warn(e);
