@@ -1,0 +1,17 @@
+.github
+.husky
+.idea
+container
+tests
+test-results
+.dockerignore
+.env.example
+.env
+.npmrc
+.prettierignore
+.prettierrc
+compose.yaml
+eslint.config.cs
+README.md
+playwright.config.ts
+pnpm-workspace.yaml

@@ -1,6 +1,6 @@
 import { type RequestHandler } from '@sveltejs/kit';
 import { R34_API_URL } from '$lib/logic/api-client/url';
-import { RULE34_API_KEY, RULE34_API_USER } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const params = new URLSearchParams({
@@ -15,8 +15,8 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	const id = url.searchParams.get('id');
 	const tags = url.searchParams.get('tags');
 
-	const api_key = url.searchParams.get('api_key') ?? RULE34_API_KEY;
-	const user_id = url.searchParams.get('user_id') ?? RULE34_API_USER;
+	const api_key = url.searchParams.get('api_key') ?? env['RULE34_API_KEY'];
+	const user_id = url.searchParams.get('user_id') ?? env['RULE34_API_USER'];
 
 	if (fields) params.append('fields', fields);
 	if (limit) params.append('limit', limit);

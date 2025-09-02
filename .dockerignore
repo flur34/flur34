@@ -2,10 +2,15 @@
 /build
 /package
 /test-results
-*.md
-vite.config.*.timestamp-*
+
+# Catch all dot files/dirs
 .*
 
+# Individual files
+vite.config.*.timestamp-*
+compose.yaml
+*.md
+
 # Exceptions
-!.git
-!.*ignore
+!.npmignore
+!.gitignore

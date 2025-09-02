@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { R34_API_URL } from '$lib/logic/api-client/url';
-import { RULE34_API_KEY, RULE34_API_USER } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const isAutocomplete = url.searchParams.has('autocomplete');
@@ -28,8 +28,8 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 
 	const name = url.searchParams.get('name');
 
-	const api_key = url.searchParams.get('api_key') ?? RULE34_API_KEY;
-	const user_id = url.searchParams.get('user_id') ?? RULE34_API_USER;
+	const api_key = url.searchParams.get('api_key') ?? env['RULE34_API_KEY'];
+	const user_id = url.searchParams.get('user_id') ?? env['RULE34_API_USER'];
 
 	if (name) params.append('name', name);
 

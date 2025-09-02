@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
 # Common args
-ARG PNPM_VERSION=10.15.0
+ARG PNPM_VERSION=10.15.1
 ARG PLAYWRIGHT_BROWSERS="chromium"
 ARG PROJECT_VERSION=1.0.0-rc.7
 
-FROM node:lts-alpine AS node-tests
+FROM node:lts-bookworm AS node-tests
 WORKDIR /app
 
 # keep CI deterministic
@@ -21,12 +21,12 @@ RUN corepack enable \
   && corepack prepare pnpm@${PNPM_VERSION} --activate
 
 # Use cache for speed & fetch config
-COPY package.json pnpm-lock.yaml ./
+COPY ../package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
     pnpm fetch
 
 # bring in the rest of the app
-COPY . .
+COPY .. .
 
 # strict lockfile-based install and run tests
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
@@ -35,7 +35,6 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
  && pnpm run test:unit
 
 
-# ubuntu for playwrght compatibility
 FROM node:lts-bookworm AS playwright-tests
 WORKDIR /app
 
@@ -74,27 +73,29 @@ RUN corepack enable \
 
 COPY --from=playwright-tests /app ./
 
-RUN pnpm run build
+RUN pnpm run build \
+    && pnpm --filter=kurosearch deploy --prod /app/prod
 
-FROM caddy:2.10.0-alpine AS server
+FROM gcr.io/distroless/nodejs20-debian12:nonroot AS runtime
+
 ARG PROJECT_VERSION
+ARG PNPM_VERSION
+
 LABEL author=flurbudurbur \
     org.opencontainers.image.title="kurosearch" \
     org.opencontainers.image.description="A self-contained version of kurosearch.com" \
     org.opencontainers.image.version=${PROJECT_VERSION} \
     org.opencontainers.image.source="https://github.com/flurbudurbur/kurosearch" \
-    org.opencontainers.image.arch="amd64" \
-    org.opencontainers.image.authors="flurbudurbur <69259138+flurbudurbur@users.noreply.github.com>"
+    org.opencontainers.image.authors="flurbudurbur 69259138+flurbudurbur@users.noreply.github.com"
 
-ENV CADDY_ADMIN=off
+ENV NODE_ENV=production \
+    PORT=8080
 
-RUN chown -R 1000:1000 /srv /etc/caddy
-USER 1000:1000
+WORKDIR /app
 
-COPY --from=builder /app/build /srv
-COPY ./Caddyfile /etc/caddy/Caddyfile
+COPY --chown=nonroot:nonroot --from=builder /app/prod/node_modules ./node_modules
+COPY --chown=nonroot:nonroot --from=builder /app/build ./build
 
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
- CMD wget -q --spider http://localhost/ || exit 1
+EXPOSE 8080
 
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+CMD ["/app/build/index.js"]

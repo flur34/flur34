@@ -35,7 +35,7 @@ Prerequisites:
 
 For users who want to plug this container into an existing reverse proxy, do the following:
 
-1. Copy the [Caddyfile](./Caddyfile) to your project folder
+1. Copy the [Caddyfile](container/Caddyfile) to your project folder
    - Replace `{$KUROSEARCH_HOST}` with `:80`
    - Remove the line with `tls`
 2. Edit the [compose.yaml](./compose.yaml)

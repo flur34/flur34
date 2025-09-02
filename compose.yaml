@@ -1,23 +1,56 @@
+name: 'kurosearch'
+
 services:
-  flur34:
-    container_name: 'flur34'
+  caddy:
+    container_name: 'caddy'
     restart: unless-stopped
-    image: 'ghcr.io/flurbudurbur/kurosearch:latest'
+    image: 'caddy:2-alpine'
     ports:
       - '80:80'
       - '443:443'
-      - '443:443/udp' # for http3 support
+      - '443:443/udp'
     cap_drop:
       - 'ALL'
     cap_add:
-      - 'NET_ADMIN'
       - 'NET_BIND_SERVICE'
+      # - 'NET_ADMIN'
+      # Read before uncommenting. Security implications!
+      # https://hub.docker.com/_/caddy#linux-capabilities
     volumes:
-      - data:/data
-      - config:/config
+      - caddy-data:/data
+      - caddy-config:/config
+      - ./container/Caddyfile:/etc/caddy/Caddyfile:ro
     env_file:
       - '.env'
+    networks:
+      - 'kurosearch'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1m'
+        max-file: '1'
+    depends_on:
+      - 'kurosearch'
+
+  kurosearch:
+    container_name: 'kurosearch'
+    restart: unless-stopped
+    image: 'ghcr.io/flurbudurbur/kurosearch:latest'
+    ports:
+      - '127.0.0.1:8080:8080'
+    env_file:
+      - '.env'
+    networks:
+      - 'kurosearch'
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1m'
+        max-file: '1'
+
+networks:
+  kurosearch:
 
 volumes:
-  data:
-  config:
+  caddy-data:
+  caddy-config:

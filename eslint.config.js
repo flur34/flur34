@@ -38,7 +38,6 @@ export default [
 					caughtErrorsIgnorePattern: '^_'
 				}
 			],
-			'no-undef': 'off'
 		}
 	},
 	{
