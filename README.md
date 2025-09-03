@@ -53,10 +53,14 @@ Open 'em up in the issues tab (preferably) or contact me. Info below.
 
 Discord: `@flurbudurbur`
 
-## Planned Features 
+## Planned Features
 
 Always taking suggestions!
 
 - [ ] Shared caching database like Redis/Valkey.
 - [ ] Public instances page to view and use community member's instances.
 - [ ] R34 API polling and caching to always have latest images pre-loaded.
+
+### Nice to have
+
+- [ ] GitHub workflow that compiles and publishes new releases.
