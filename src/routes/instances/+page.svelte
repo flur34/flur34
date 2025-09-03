@@ -50,7 +50,7 @@
 			source_url: it.source ?? '',
 			details: {
 				version: it.details?.version ?? 'N/A',
-				// Do NOT fallback to "now" — leave 0 if missing/unparseable
+				// Do NOT fall back to "now" — leave 0 if missing/unparseable
 				last_check: (lastCheckMs ?? 0) as EpochTimeStamp,
 				uptime: it.details?.uptime ?? 0
 			}

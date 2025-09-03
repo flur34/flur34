@@ -1,6 +1,6 @@
 import { type RequestHandler } from '@sveltejs/kit';
 import { R34_API_URL } from '$lib/logic/api-client/url';
-import { env } from '$env/dynamic/private';
+import { appendAuthParams, createOptionalParamAppender } from '$lib/logic/api-client/param-utils';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const params = new URLSearchParams({
@@ -9,24 +9,13 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		q: 'index'
 	});
 
-	const fields = url.searchParams.get('fields');
+	const append = createOptionalParamAppender(url, params);
+	append('field', 'pid', 'id', 'tags', 'field');
+
+	appendAuthParams(url, params);
+
 	const limit = url.searchParams.get('limit');
-	const pid = url.searchParams.get('pid');
-	const id = url.searchParams.get('id');
-	const tags = url.searchParams.get('tags');
-
-	const api_key = url.searchParams.get('api_key') ?? env['RULE34_API_KEY'];
-	const user_id = url.searchParams.get('user_id') ?? env['RULE34_API_USER'];
-
-	if (fields) params.append('fields', fields);
 	if (limit) params.append('limit', limit);
-	if (pid) params.append('pid', pid);
-	if (id) params.append('id', id);
-	if (tags) params.append('tags', tags);
-
-	if (api_key) params.append('api_key', api_key);
-	if (user_id) params.append('user_id', user_id);
-
 	// If this is NOT a count request (limit=0), request JSON
 	const isCount = limit === '0';
 	if (!isCount) {

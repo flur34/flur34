@@ -36,7 +36,7 @@
 
 	let currentTime = $state(0);
 	let paused = $state(!$autoplayFullscreenEnabled);
-	let loading = $state($autoplayFullscreenEnabled);
+	let loading: boolean = $state($autoplayFullscreenEnabled);
 
 	let overlayHidden = $state(true);
 	const onclick = (e: Event) => {

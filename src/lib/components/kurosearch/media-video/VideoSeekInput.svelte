@@ -27,11 +27,10 @@
 		appearance: none;
 		-webkit-appearance: none;
 		height: calc(2 * var(--line-height));
-		margin: 0;
 		align-self: flex-end;
 		background-clip: content-box;
 		padding-block: calc(14px + var(--line-height)) 14px;
-		margin-top: calc(-14px - var(--line-height));
+		margin: calc(-14px - var(--line-height)) 0 0;
 		border-radius: 2px;
 
 		touch-action: manipulation; /* FIREFOX: Prevent all touch gestures */

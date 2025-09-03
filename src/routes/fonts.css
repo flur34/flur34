@@ -9,6 +9,7 @@
 @font-face {
 	font-family: 'Roboto';
 	font-weight: 400;
+	/*noinspection CssInvalidPropertyValue*/
 	src:
 		url('/font/Roboto-Regular.woff2') format('woff2'),
 		url('/font/Roboto-Regular.woff') format('woff'),

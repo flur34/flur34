@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { R34_API_URL } from '$lib/logic/api-client/url';
-import { env } from '$env/dynamic/private';
+import { appendAuthParams, createOptionalParamAppender } from '$lib/logic/api-client/param-utils';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const isAutocomplete = url.searchParams.has('autocomplete');
@@ -26,15 +26,8 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		limit: '1'
 	});
 
-	const name = url.searchParams.get('name');
-
-	const api_key = url.searchParams.get('api_key') ?? env['RULE34_API_KEY'];
-	const user_id = url.searchParams.get('user_id') ?? env['RULE34_API_USER'];
-
-	if (name) params.append('name', name);
-
-	if (api_key) params.append('api_key', api_key);
-	if (user_id) params.append('user_id', user_id);
+	createOptionalParamAppender(url, params)('name');
+	appendAuthParams(url, params);
 
 	const upstream = await fetch(`${R34_API_URL}?${params.toString()}`);
 

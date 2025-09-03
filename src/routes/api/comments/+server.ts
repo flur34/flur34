@@ -1,27 +1,24 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { R34_API_URL } from '$lib/logic/api-client/url';
-import { env } from '$env/dynamic/private';
+import { appendAuthParams, createRequiredParamGetter } from '$lib/logic/api-client/param-utils';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
-	const id = url.searchParams.get('post_id');
-
-	if (!id) {
-		return json({ error: 'Missing required query param: post_id' }, { status: 400 });
+	const require = createRequiredParamGetter(url);
+	const { values, missing } = require('post_id');
+	if (missing.length) {
+		return json({ error: `Missing required query param: ${missing.join(', ')}` }, { status: 400 });
 	}
 
 	const params = new URLSearchParams({
 		page: 'dapi',
 		s: 'comment',
-		q: 'index',
-		id
+		q: 'index'
 	});
 
-	const api_key = url.searchParams.get('api_key') ?? env['RULE34_API_KEY'];
-	const user_id = url.searchParams.get('user_id') ?? env['RULE34_API_USER'];
+	params.append('id', values['post_id']);
 
-	if (api_key) params.append('api_key', api_key);
-	if (user_id) params.append('user_id', user_id);
+	appendAuthParams(url, params);
 
 	const upstream = await fetch(`${R34_API_URL}?${params.toString()}`);
 

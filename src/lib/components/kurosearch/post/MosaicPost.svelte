@@ -20,6 +20,12 @@
 		src.endsWith('.jpg') || src.endsWith('.jpeg') || src.endsWith('.png') || src.endsWith('.webp');
 
 	let previewSrc = $derived(isImage(post.sample_url) ? post.sample_url : post.preview_url);
+
+	const handleKeydown = (event: KeyboardEvent) => {
+		if (isEnter(event) || event.key === 'f') {
+			(event.currentTarget as HTMLDivElement).click();
+		}
+	};
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -28,12 +34,7 @@
 	class="post"
 	style="grid-row: span {rows};"
 	{onclick}
-	onkeydown={(event) => {
-		if (isEnter(event) || event.key === 'f') {
-			(event.target as HTMLDivElement)?.click();
-		}
-	}}
-	class:open
+	onkeydown={handleKeydown}
 >
 	<img src={previewSrc} alt="post" class="post-media" tabindex="-1" loading="lazy" />
 	{#if post.type !== 'image'}

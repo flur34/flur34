@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import TermsOfUseDialog from '$lib/components/kurosearch/dialog-terms-of-use/CookieMessage.svelte';
 	import AccountLink from '$lib/components/kurosearch/link-account/AccountLink.svelte';
 	import DiscordLink from '$lib/components/kurosearch/link-discord/DiscordLink.svelte';
@@ -66,7 +66,7 @@
 	</nav>
 </header>
 
-<main class:extra-wide={$wideLayoutEnabled && $page.url.pathname === '/'}>
+<main class:extra-wide={$wideLayoutEnabled && page.url.pathname === '/'}>
 	{@render children?.()}
 </main>
 
