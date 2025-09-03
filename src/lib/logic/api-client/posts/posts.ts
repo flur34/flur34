@@ -181,7 +181,7 @@ export const getCountUrl = (serializedTags: string, apiKey: string, userId: stri
 };
 
 const throwOnInvalidCount = (count: unknown) => {
-	if (typeof count !== 'number') {
+	if (!Number.isFinite(count as number)) {
 		throw new Error('Unexpected response received in getPage');
 	}
 };

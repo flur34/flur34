@@ -8,6 +8,9 @@ export type Comment = {
 };
 
 export const getComments = async (postId: number, apiKey: string = '', userId: string = '') => {
+	if (typeof postId !== 'number') {
+		throw new TypeError('Invalid postId');
+	}
 	const indexedComments = await getIndexedComments(postId);
 	if (indexedComments !== undefined) {
 		return indexedComments;

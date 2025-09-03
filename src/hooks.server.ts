@@ -18,7 +18,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		const secFetchDest = req.headers.get('sec-fetch-dest');
 		if (secFetchDest === 'document') {
-			return new Response('Forbidden', { status: 403 });
+			return new Response('ohmygosh STAAAAPP1!! >w<', { status: 403 });
 		}
 
 		const secFetchSite = req.headers.get('sec-fetch-site');
@@ -42,7 +42,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			(originOk && hasTrustedMarker);
 
 		if (!allowed) {
-			return new Response('Forbidden', { status: 403 });
+			return new Response('ohmygosh STAAAAPP1!! >w<', { status: 403 });
 		}
 	}
 
