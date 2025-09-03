@@ -38,7 +38,7 @@
 </script>
 
 <Fullscreen onclose={() => onclose(index)}>
-	<FullscreenScroller bind:index {onendreached} {startAt}/>
+	<FullscreenScroller bind:index {onendreached} {startAt} />
 	<IconButton class="button-close" onclick={() => onclose(index)}>
 		<i class="codicon codicon-close"></i>
 	</IconButton>
