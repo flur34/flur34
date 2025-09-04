@@ -1,8 +1,12 @@
 import { browser } from '$app/environment';
 
-export const supportsUrlSharing = () => browser && 'share' in window.navigator;
-export const supportsFlexGap = (() => {
-	if (!browser) return false;
+// Allow tests to override browser detection at runtime without changing production behavior.
+// In production, __TEST_BROWSER__ is undefined and we fall back to SvelteKit's `browser`.
+const BROWSER_RUNTIME: boolean = (globalThis as any).__TEST_BROWSER__ ?? browser;
+
+export const supportsUrlSharing = () => BROWSER_RUNTIME && 'share' in window.navigator;
+export const computeFlexGapSupport = (runtime: boolean = BROWSER_RUNTIME): boolean => {
+	if (!runtime) return false;
 
 	// create flex container with row-gap set
 	const flex = document.createElement('div');
@@ -10,7 +14,7 @@ export const supportsFlexGap = (() => {
 	flex.style.flexDirection = 'column';
 	flex.style.rowGap = '1px';
 
-	// create two, elements inside it
+	// create two elements inside it
 	flex.appendChild(document.createElement('div'));
 	flex.appendChild(document.createElement('div'));
 
@@ -20,11 +24,13 @@ export const supportsFlexGap = (() => {
 	flex.remove();
 
 	return isSupported;
-})();
+};
 
-export const supportsGap = browser && 'gap' in document.body.style;
-export const supportsAspectRatio = browser && 'aspect-ratio' in document.body.style;
-export const supportsObjectFit = browser && 'object-fit' in document.body.style;
-export const supportsFullscreen = browser && document.fullscreenEnabled;
-export const supportsLocalStorage = browser && Boolean(localStorage);
-export const supportsSessionStorage = browser && Boolean(sessionStorage);
+export const supportsFlexGap = computeFlexGapSupport();
+
+export const supportsGap = BROWSER_RUNTIME && 'gap' in document.body.style;
+export const supportsAspectRatio = BROWSER_RUNTIME && 'aspect-ratio' in document.body.style;
+export const supportsObjectFit = BROWSER_RUNTIME && 'object-fit' in document.body.style;
+export const supportsFullscreen = BROWSER_RUNTIME && document.fullscreenEnabled;
+export const supportsLocalStorage = BROWSER_RUNTIME && Boolean(localStorage);
+export const supportsSessionStorage = BROWSER_RUNTIME && Boolean(sessionStorage);

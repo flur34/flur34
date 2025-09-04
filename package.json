@@ -16,10 +16,6 @@
 	"bugs": "https://github.com/flurbudurbur/kurosearch/issues",
 	"repository": "https://github.com/flurbudurbur/kurosearch",
 	"readme": "README.md",
-	"main": "bin",
-	"bin": {
-		"kurosearch": "build/index.js"
-	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -27,9 +23,10 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"lint": "prettier . --check . && eslint .",
 		"format": "prettier . --write .",
+        "coverage": "vitest run --coverage",
 		"test:unit": "vitest run",
 		"test:integration": "playwright test",
-		"verify": "concurrently --names \"unit,integration,svelte\" \"pnpm -S test:unit\" \"pnpm exec playwright test\" \"pnpm -S check\"",
+		"verify": "concurrently --names \"unit,integration,svelte\" \"pnpm -S test:unit\" \"pnpm -S test:integration\" \"pnpm -S check\"",
 		"prepare": "husky || true"
 	},
 	"devDependencies": {
