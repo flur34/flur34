@@ -1,6 +1,5 @@
 ![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fflurbudurbur%2Fkurosearch%2Fraw%2Fmain%2Fpackage.json&query=%24.version&style=flat&label=Version&link=https%3A%2F%2Fgithub.com%2Fflurbudurbur%2Fkurosearch%2Freleases%2Flatest)
 
-
 <div style="display: flex; place-content: center; padding: 1rem">
     <img src=".github/brand/logo.svg" alt="logo" height="100px"/>
     <img src=".github/brand/cross.svg" alt="cross" height="80px">

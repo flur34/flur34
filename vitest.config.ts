@@ -14,7 +14,7 @@ export default defineConfig({
 		coverage: {
 			reporter: ['json-summary', 'text'],
 			include: ['src/lib/logic/**/*.ts'],
-				exclude: [
+			exclude: [
 				// environment-specific or integration-heavy modules excluded from unit coverage
 				'src/lib/logic/firebase/**',
 				'src/lib/logic/**-observer.ts',
