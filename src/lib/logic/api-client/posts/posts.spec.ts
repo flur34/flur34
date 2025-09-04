@@ -1,12 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockFetch, makeResponse } from '../../../../test/mocks/fetch';
 
-// Mock IndexedDB idb module for posts to avoid real IDB usage and warnings
-vi.mock('$lib/indexeddb/idb', async () => {
-	const mod = await import('../../../../test/mocks/indexeddb');
-	return mod as any;
-});
-
 // Ensure predictable origin for URL building
 const setOrigin = (origin: string) => {
 	Object.defineProperty(window, 'location', {
@@ -15,14 +9,35 @@ const setOrigin = (origin: string) => {
 	});
 };
 
-// Import after mocks are set up
+// Import SUT
 import { getPage, getPost, getCount, getPostsUrl, getCountUrl, PAGE_SIZE } from './posts';
+
+const delay = (ms = 10) => new Promise((r) => setTimeout(r, ms));
+
+const clearStores = async () => {
+	await new Promise<void>((resolve, reject) => {
+		const req = indexedDB.open('kurosearch', 3);
+		req.addEventListener('success', (e) => {
+			const db = (e.target as IDBOpenDBRequest).result;
+			const tx = db.transaction(['comments', 'posts', 'tags'], 'readwrite');
+			tx.objectStore('comments').clear();
+			tx.objectStore('posts').clear();
+			tx.objectStore('tags').clear();
+			tx.addEventListener('complete', () => resolve());
+			tx.addEventListener('error', (err) => reject(err));
+			tx.addEventListener('abort', (err) => reject(err));
+		});
+		req.addEventListener('error', (e) => reject(e));
+	});
+};
 
 const originalFetch = global.fetch as any;
 
 describe('api-client/posts', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		setOrigin('http://localhost:3000/');
+		await delay(20);
+		await clearStores();
 	});
 
 	afterEach(() => {

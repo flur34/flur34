@@ -19,15 +19,28 @@ export const persistentWritable = <T>(
 	serializer: SerializerFn<T> = defaultSerializer,
 	parser: ParserFn<T> = defaultParser
 ) => {
-	const stored = browser ? localStorage.getItem(key) : null;
+	const stored = browser ? window.localStorage.getItem(key) : null;
 	const value = getInitialValue(stored, initial, parser);
 	const store = writable(value);
 
-	if (browser) {
-		store.subscribe((value) => localStorage.setItem(key, serializer(value)));
-	}
-
-	return store;
+	return {
+		subscribe: store.subscribe,
+		set: (v: T) => {
+			store.set(v);
+			if (browser) {
+				window.localStorage.setItem(key, serializer(v));
+			}
+		},
+		update: (fn: (v: T) => T) => {
+			store.update((cur) => {
+				const v = fn(cur);
+				if (browser) {
+					window.localStorage.setItem(key, serializer(v));
+				}
+				return v;
+			});
+		}
+	};
 };
 
 const getInitialValue = <T>(stored: string | null, initial: T, parser: ParserFn<T>): T => {

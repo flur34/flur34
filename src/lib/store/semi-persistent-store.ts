@@ -16,22 +16,40 @@ export const semiPersistentWritable = <T>(
 	let storage = undefined;
 
 	if (browser) {
-		const enabled = localStorage.getItem('Kurosearch:localstorage-enabled') === 'true';
-		storage = enabled ? localStorage : sessionStorage;
+		let enabled = true;
+		try {
+			const flag = window.localStorage.getItem('Kurosearch:localstorage-enabled');
+			if (flag !== null) enabled = flag === 'true';
+		} catch {
+			enabled = true;
+		}
+		storage = enabled ? window.localStorage : window.sessionStorage;
 	}
 
 	const stored = browser && storage ? storage.getItem(key) : null;
 	const loaded = getInitialValue(initial, stored, parser);
 	const store = writable(loaded);
 
-	if (browser) {
-		store.subscribe((value) => {
-			sessionStorage.setItem(key, serializer(value));
-			localStorage.setItem(key, serializer(value));
-		});
-	}
-
-	return store;
+	return {
+		subscribe: store.subscribe,
+		set: (v: T) => {
+			store.set(v);
+			if (browser) {
+				window.sessionStorage.setItem(key, serializer(v));
+				window.localStorage.setItem(key, serializer(v));
+			}
+		},
+		update: (fn: (v: T) => T) => {
+			store.update((cur) => {
+				const v = fn(cur);
+				if (browser) {
+					window.sessionStorage.setItem(key, serializer(v));
+					window.localStorage.setItem(key, serializer(v));
+				}
+				return v;
+			});
+		}
+	};
 };
 
 const getInitialValue = <T>(initial: T, stored: string | null, parser: ParserFn<T>) => {

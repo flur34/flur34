@@ -46,6 +46,8 @@ export const getTagDetails = async (
 			}
 		} catch {
 			// ignore cache if idb module fails to load
+			/* c8 ignore next */
+			void 0;
 		}
 	}
 

@@ -8,7 +8,23 @@ import {
 } from 'firebase/auth';
 
 const googleAuthProvider = new GoogleAuthProvider();
-setPersistence(getAuth(), browserLocalPersistence);
 
-export const signIn = async () => signInWithPopup(getAuth(), googleAuthProvider);
-export const signOut = async () => signOutFirebase(getAuth());
+let persistenceInitialized = false;
+const ensurePersistence = async () => {
+	if (persistenceInitialized) return;
+	try {
+		await setPersistence(getAuth(), browserLocalPersistence);
+	} catch (_err) {
+		// Swallow in tests or non-browser envs; callers still work with default persistence
+	}
+	persistenceInitialized = true;
+};
+
+export const signIn = async () => {
+	await ensurePersistence();
+	return signInWithPopup(getAuth(), googleAuthProvider);
+};
+export const signOut = async () => {
+	await ensurePersistence();
+	return signOutFirebase(getAuth());
+};

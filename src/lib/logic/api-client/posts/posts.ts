@@ -9,6 +9,8 @@ const API_ENDPOINT = '/api/posts';
 
 const getPageAbortController: AbortController | null = null;
 
+const isTestEnv = typeof import.meta !== 'undefined' && (import.meta as any).env?.MODE === 'test';
+
 export const getPage = async (
 	pageNumber: number,
 	tags: string,
@@ -30,7 +32,7 @@ export const getPage = async (
 
 		return posts;
 	} catch (error) {
-		console.warn('Failed to get posts', error);
+		if (!isTestEnv) console.warn('Failed to get posts', error);
 		return [];
 	}
 };
@@ -52,7 +54,7 @@ export const getCount = async (tags: string, apiKey: string = '', userId: string
 
 		return count;
 	} catch (error) {
-		console.warn('Failed to get count', error);
+		if (!isTestEnv) console.warn('Failed to get count', error);
 		return 0;
 	}
 };

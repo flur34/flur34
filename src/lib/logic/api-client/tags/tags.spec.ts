@@ -76,30 +76,70 @@ describe('api-client/tags', () => {
 			const tag = await getTagDetails('cafe', '', '');
 			expect(tag).toEqual({ name: 'café', count: 42, type: 'artist' });
 		});
+	});
+});
 
-		it('uses IndexedDB cache when available', async () => {
-			// Simulate browser indexedDB presence
-			// @ts-ignore
-			(window as any).indexedDB = {};
-
-			// Mock the idb module with our in-memory mock
-			vi.mock('$lib/indexeddb/idb', async () => {
-				const mod = await import('../../../../test/mocks/indexeddb');
-				return mod as any;
-			});
-
-			const xml = '<tags count="1"><tag name="bird" count="10" type="0" /></tags>';
-			const fetchSpy = mockFetch(async () => makeResponse({ text: xml }));
-
-			// First call: will fetch and then cache
-			const t1 = await getTagDetails('bird', '', '');
-			expect(t1).toEqual({ name: 'bird', count: 10, type: 'general' });
-			expect(fetchSpy).toHaveBeenCalledTimes(1);
-
-			// Second call: should hit cache and not call fetch again
-			const t2 = await getTagDetails('bird', '', '');
-			expect(t2).toEqual({ name: 'bird', count: 10, type: 'general' });
-			expect(fetchSpy).toHaveBeenCalledTimes(1);
+describe('getTagDetails (auth and cache branches)', () => {
+	it('appends api_key and user_id to request URL when both are provided', async () => {
+		const xml = '<tags count="1"><tag name="bird" count="10" type="0" /></tags>';
+		const fetchSpy = mockFetch(async (input) => {
+			const url = new URL(input as string);
+			expect(url.searchParams.get('name')).toBe('bird');
+			expect(url.searchParams.get('api_key')).toBe('KEY');
+			expect(url.searchParams.get('user_id')).toBe('USER');
+			return makeResponse({ text: xml });
 		});
+
+		const tag = await getTagDetails('bird', 'KEY', 'USER');
+		expect(tag).toEqual({ name: 'bird', count: 10, type: 'general' });
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	});
+
+	it('ignores cache READ errors and proceeds to fetch', async () => {
+		// Simulate browser indexedDB presence
+		// @ts-ignore
+		(window as any).indexedDB = {};
+
+		// Mock idb where getIndexedTag throws
+		vi.mock('$lib/indexeddb/idb', () => ({
+			getIndexedTag: () => {
+				throw new Error('read fail');
+			}
+		}));
+
+		const xml = '<tags count="1"><tag name="lion" count="5" type="0" /></tags>';
+		const fetchSpy = mockFetch(async () => makeResponse({ text: xml }));
+
+		const tag = await getTagDetails('lion', '', '');
+		expect(tag).toEqual({ name: 'lion', count: 5, type: 'general' });
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	});
+
+	it('ignores cache WRITE errors after successful fetch', async () => {
+		// Simulate browser indexedDB presence
+		// @ts-ignore
+		(window as any).indexedDB = {};
+
+		// Mock idb where addIndexedTag throws
+		vi.mock('$lib/indexeddb/idb', () => ({
+			getIndexedTag: async () => undefined,
+			addIndexedTag: () => {
+				throw new Error('write fail');
+			}
+		}));
+
+		const xml = '<tags count="1"><tag name="tiger" count="3" type="0" /></tags>';
+		const fetchSpy = mockFetch(async () => makeResponse({ text: xml }));
+
+		const tag = await getTagDetails('tiger', '', '');
+		expect(tag).toEqual({ name: 'tiger', count: 3, type: 'general' });
+		expect(fetchSpy).toHaveBeenCalledTimes(1);
+	});
+
+	it('returns undefined when tag element is present but missing required attributes', async () => {
+		const xml = '<tags count="1"><tag count="1" type="0" /></tags>'; // missing name
+		mockFetch(async () => makeResponse({ text: xml }));
+		const tag = await getTagDetails('whatever', '', '');
+		expect(tag).toBeUndefined();
 	});
 });

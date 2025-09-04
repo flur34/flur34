@@ -1,6 +1,9 @@
 const COMMENT_LIFETIME_HOURS = 48;
 const POST_LIFETIME_HOURS = 48;
 
+// Allow tests to isolate databases by overriding the name via a global
+const DB_NAME: string = (globalThis as any).__KUROSEARCH_IDB_NAME__ ?? 'kurosearch';
+
 let idb: IDBDatabase | undefined;
 
 const currentHour = () => Math.round(new Date().getTime() / 1000 / 60 / 60);
@@ -47,7 +50,7 @@ const clean = async () =>
 
 const initIdb = async (): Promise<IDBDatabase> => {
 	return new Promise((resolve, reject) => {
-		const request = indexedDB.open('kurosearch', 3);
+		const request = indexedDB.open(DB_NAME, 3);
 		request.addEventListener('success', (e) => resolve((e.target as IDBRequest).result));
 		request.addEventListener('error', (e) => reject(e));
 		request.addEventListener('upgradeneeded', (event) => {
@@ -58,42 +61,61 @@ const initIdb = async (): Promise<IDBDatabase> => {
 			transaction.addEventListener('abort', (e) => reject(e));
 
 			// had too many indices in the past, oops. Remove them all first.
-			if (db.objectStoreNames.contains('tags')) {
-				const tagStore = transaction.objectStore('tags');
-				if (tagStore.indexNames.contains('name')) {
-					tagStore.deleteIndex('name');
-				}
-				if (tagStore.indexNames.contains('type')) {
-					tagStore.deleteIndex('type');
-				}
-				if (tagStore.indexNames.contains('count')) {
-					tagStore.deleteIndex('count');
+			{
+				const storeNames = Array.from(db.objectStoreNames as any as string[]);
+				if (storeNames.includes('tags')) {
+					const tagStore = transaction.objectStore('tags');
+					const names = Array.from(tagStore.indexNames as any as string[]);
+					if (names.includes('name')) {
+						try {
+							tagStore.deleteIndex('name');
+						} catch (e) {
+							void e;
+						}
+					}
+					if (names.includes('type')) {
+						try {
+							tagStore.deleteIndex('type');
+						} catch (e) {
+							void e;
+						}
+					}
+					if (names.includes('count')) {
+						try {
+							tagStore.deleteIndex('count');
+						} catch (e) {
+							void e;
+						}
+					}
 				}
 			}
 
-			if (!db.objectStoreNames.contains('tags')) {
-				try {
-					db.createObjectStore('tags', { keyPath: 'name' });
-				} catch (e) {
-					reject(e);
+			{
+				const storeNames = Array.from(db.objectStoreNames as any as string[]);
+				if (!storeNames.includes('tags')) {
+					try {
+						db.createObjectStore('tags', { keyPath: 'name' });
+					} catch (e) {
+						reject(e);
+					}
 				}
-			}
 
-			if (!db.objectStoreNames.contains('comments')) {
-				try {
-					const commentStore = db.createObjectStore('comments', { keyPath: 'postId' });
-					commentStore.createIndex('indexedAt', 'indexedAt', { unique: false });
-				} catch (e) {
-					reject(e);
+				if (!storeNames.includes('comments')) {
+					try {
+						const commentStore = db.createObjectStore('comments', { keyPath: 'postId' });
+						commentStore.createIndex('indexedAt', 'indexedAt', { unique: false });
+					} catch (e) {
+						reject(e);
+					}
 				}
-			}
 
-			if (!db.objectStoreNames.contains('posts')) {
-				try {
-					const postStore = db.createObjectStore('posts', { keyPath: 'id' });
-					postStore.createIndex('indexedAt', 'indexedAt', { unique: false });
-				} catch (e) {
-					reject(e);
+				if (!storeNames.includes('posts')) {
+					try {
+						const postStore = db.createObjectStore('posts', { keyPath: 'id' });
+						postStore.createIndex('indexedAt', 'indexedAt', { unique: false });
+					} catch (e) {
+						reject(e);
+					}
 				}
 			}
 		});

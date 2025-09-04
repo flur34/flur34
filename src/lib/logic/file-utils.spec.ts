@@ -168,3 +168,22 @@ describe('file-utils', () => {
 		await expect(loadFile()).rejects.toThrow('Failed to read file');
 	});
 });
+
+it('saveFile logs error when picker throws', async () => {
+	resetDom();
+	const err = new Error('picker-failed');
+	const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+	// @ts-expect-error mock window
+	(globalThis as any).showSaveFilePicker = vi.fn(async () => {
+		throw err;
+	});
+
+	await saveFile('x');
+
+	expect(spy).toHaveBeenCalledWith(err);
+
+	// cleanup
+	// @ts-ignore
+	delete (globalThis as any).showSaveFilePicker;
+	spy.mockRestore();
+});

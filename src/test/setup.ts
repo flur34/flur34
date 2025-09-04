@@ -1,3 +1,4 @@
+import 'fake-indexeddb/auto';
 import { afterEach, vi } from 'vitest';
 
 class IO implements IntersectionObserver {
