@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loadModule = async (browser: boolean) => {
 	vi.resetModules();
@@ -9,11 +9,10 @@ const loadModule = async (browser: boolean) => {
 const getValue = async <T>(store: any) =>
 	new Promise<T>((resolve) => {
 		let unsub: () => void;
-		const stop = store.subscribe((v: T) => {
+		unsub = store.subscribe((v: T) => {
 			resolve(v);
 			setTimeout(() => unsub(), 0);
 		});
-		unsub = stop;
 	});
 
 beforeEach(() => {
@@ -94,6 +93,7 @@ describe('semi-persistent-store', () => {
 		parser = vi.fn(() => {
 			throw new Error('bad');
 		});
+		// @ts-expect-error - passing wrong type to test error handling
 		store = mod.semiPersistentWritable('k', 5, mod.defaultSerializer, parser);
 		v = await getValue<number>(store);
 		expect(v).toBe(5);

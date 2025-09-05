@@ -11,7 +11,7 @@ const importWithIO = async (hasIO: boolean) => {
 			observe(_el: Element) {}
 			unobserve(_el: Element) {}
 		}
-		// @ts-expect-error attach to global
+		// @ts-ignore attach to global
 		globalThis.IntersectionObserver = IO as unknown as typeof IntersectionObserver;
 	} else {
 		// Ensure no IO present so module takes SSR path

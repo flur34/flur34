@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { createSearchableTag } from './tag-utils';
 import { parseShareTags } from './share-utils';
+import type { FilterStoreData } from '$lib/store/filter-store';
 
 const makeSort = (property: kurosearch.SortProperty, direction: kurosearch.SortDirection) => ({
 	property,
@@ -9,8 +10,8 @@ const makeSort = (property: kurosearch.SortProperty, direction: kurosearch.SortD
 });
 
 const makeFilter = (
-	overrides: Partial<kurosearch.FilterStoreData> = {}
-): Partial<kurosearch.FilterStoreData> => ({
+	overrides: Partial<FilterStoreData> = {}
+): Partial<FilterStoreData> => ({
 	rating: 'all',
 	scoreComparator: '>=',
 	scoreValue: 0,
@@ -41,6 +42,7 @@ describe('url-parsing', () => {
 
 		const tags = [createSearchableTag('+' as any, 'cat'), createSearchableTag('-' as any, 'dog')];
 		const sort = makeSort('id', 'asc'); // non-default direction triggers inclusion
+		// @ts-expect-error - Not assignable by design
 		const filter = makeFilter({ rating: 'general', scoreComparator: '<=', scoreValue: 10 });
 
 		const params = mod.serializeUrlSettings({ tags, sort: sort as any, filter });
@@ -62,6 +64,7 @@ describe('url-parsing', () => {
 
 		const tags = [createSearchableTag('+' as any, 'cat')];
 		const sort = makeSort('id', 'desc'); // default
+		// @ts-expect-error - Not assignable by design
 		const filter = makeFilter({ rating: 'general', scoreComparator: '>=', scoreValue: 0 });
 
 		const params = mod.serializeUrlSettings({ tags, sort: sort as any, filter });

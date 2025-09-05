@@ -18,7 +18,7 @@ const withMockedEnv = async (
 		// expose class for spying on prototype methods
 		// @ts-ignore
 		(globalThis as any).__TEST_IO = IO;
-		// @ts-expect-error test shim
+		// @ts-ignore test shim
 		globalThis.IntersectionObserver = IO as unknown as typeof IntersectionObserver;
 	}
 	const mod = await import('./image-observer');

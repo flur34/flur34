@@ -4,7 +4,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const importWithEnv = async (envValues: Record<string, string | undefined>) => {
 	vi.resetModules();
-	vi.doMock('$env/dynamic/private', () => ({ env: envValues }), { virtual: true });
+	vi.doMock('$env/dynamic/private', () => ({ env: envValues }));
 	return await import('./param-utils');
 };
 

@@ -25,7 +25,7 @@ const withMockedEnv = async (
 				// no-op for test tracking
 			}
 		}
-		// @ts-expect-error assign to global for test
+		// @ts-ignore assign to global for test
 		globalThis.IntersectionObserver = IO as unknown as typeof IntersectionObserver;
 	}
 	const mod = await import('./gif-observer');

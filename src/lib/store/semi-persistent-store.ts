@@ -73,3 +73,5 @@ const getInitialValue = <T>(initial: T, stored: string | null, parser: ParserFn<
 		return initial;
 	}
 };
+
+export { defaultSerializer } from './persistent-store';

@@ -12,7 +12,7 @@ describe('file-utils', () => {
 		const write = vi.fn();
 		const close = vi.fn();
 		const createWritable = vi.fn(async () => ({ write, close }));
-		// @ts-expect-error mock window
+		// @ts-ignore mock window
 		(globalThis as any).showSaveFilePicker = vi.fn(async () => ({ createWritable }));
 
 		await saveFile('hello');
@@ -29,12 +29,12 @@ describe('file-utils', () => {
 
 	it('saveFile falls back to anchor download when picker not available', async () => {
 		resetDom();
-		// @ts-expect-error
+		// @ts-ignore
 		delete (globalThis as any).showSaveFilePicker;
 		const click = vi.fn();
 		// stub URL object methods for jsdom
 		const originalURL = URL;
-		// @ts-expect-error override URL
+		// @ts-ignore override URL
 		(globalThis as any).URL = {
 			...originalURL,
 			createObjectURL: vi.fn(() => 'blob:mock'),
@@ -57,7 +57,7 @@ describe('file-utils', () => {
 		expect((URL as any).revokeObjectURL).toHaveBeenCalledTimes(1);
 
 		// restore URL
-		// @ts-expect-error restore URL
+		// @ts-ignore restore URL
 		(globalThis as any).URL = originalURL as any;
 	});
 
@@ -65,7 +65,7 @@ describe('file-utils', () => {
 		resetDom();
 		const text = vi.fn(async () => 'content');
 		const getFile = vi.fn(async () => ({ text }));
-		// @ts-expect-error mock window
+		// @ts-ignore mock window
 		(globalThis as any).showOpenFilePicker = vi.fn(async () => [{ getFile }]);
 
 		const res = await loadFile();
@@ -78,7 +78,7 @@ describe('file-utils', () => {
 
 	it('loadFile falls back to input type=file and rejects when no file selected', async () => {
 		resetDom();
-		// @ts-expect-error
+		// @ts-ignore
 		delete (globalThis as any).showOpenFilePicker;
 
 		const originalCreate = document.createElement.bind(document);
@@ -102,7 +102,7 @@ describe('file-utils', () => {
 
 	it('loadFile falls back and resolves with file content when a file is selected', async () => {
 		resetDom();
-		// @ts-expect-error ensure picker not available
+		// @ts-ignore ensure picker not available
 		delete (globalThis as any).showOpenFilePicker;
 
 		// Mock FileReader to trigger onload with content
@@ -137,7 +137,6 @@ describe('file-utils', () => {
 
 	it('loadFile falls back and rejects when FileReader errors', async () => {
 		resetDom();
-		// @ts-expect-error ensure picker not available
 		delete (globalThis as any).showOpenFilePicker;
 
 		class FRErrorMock {
@@ -173,7 +172,6 @@ it('saveFile logs error when picker throws', async () => {
 	resetDom();
 	const err = new Error('picker-failed');
 	const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-	// @ts-expect-error mock window
 	(globalThis as any).showSaveFilePicker = vi.fn(async () => {
 		throw err;
 	});

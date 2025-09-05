@@ -64,6 +64,8 @@
 		{onclick}
 	/>
 	{#if $gifPreloadEnabled}
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			src={transparentPixel}
 			data-src={animatedSource}
@@ -86,31 +88,31 @@
 </div>
 
 <style lang="scss">
-	div {
-		position: relative;
-	}
+  div {
+    position: relative;
+  }
 
-	.media-img {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-		contain: strict;
-	}
+  .media-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    contain: strict;
+  }
 
-	.animated-preload {
-		position: absolute;
-		top: 0;
-		left: 0;
-		user-select: none;
-		pointer-events: none;
-		width: 0;
-		height: 0;
-	}
+  .animated-preload {
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
 
-	@container (min-width: 800px) {
-		img {
-			border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
-		}
-	}
+  @container (min-width: 800px) {
+    img {
+      border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+    }
+  }
 </style>
