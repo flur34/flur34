@@ -88,31 +88,31 @@
 </div>
 
 <style lang="scss">
-  div {
-    position: relative;
-  }
+	div {
+		position: relative;
+	}
 
-  .media-img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    contain: strict;
-  }
+	.media-img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		contain: strict;
+	}
 
-  .animated-preload {
-    position: absolute;
-    top: 0;
-    left: 0;
-    user-select: none;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-  }
+	.animated-preload {
+		position: absolute;
+		top: 0;
+		left: 0;
+		user-select: none;
+		pointer-events: none;
+		width: 0;
+		height: 0;
+	}
 
-  @container (min-width: 800px) {
-    img {
-      border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
-    }
-  }
+	@container (min-width: 800px) {
+		img {
+			border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+		}
+	}
 </style>

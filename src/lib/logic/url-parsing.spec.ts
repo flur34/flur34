@@ -9,9 +9,7 @@ const makeSort = (property: kurosearch.SortProperty, direction: kurosearch.SortD
 	direction
 });
 
-const makeFilter = (
-	overrides: Partial<FilterStoreData> = {}
-): Partial<FilterStoreData> => ({
+const makeFilter = (overrides: Partial<FilterStoreData> = {}): Partial<FilterStoreData> => ({
 	rating: 'all',
 	scoreComparator: '>=',
 	scoreValue: 0,
