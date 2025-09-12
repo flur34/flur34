@@ -9,6 +9,12 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
-		include: ['src/**/*.{test,spec}.{js,ts}']
+		include: ['src/**/*.{test,spec}.{js,ts}'],
+		setupFiles: ['src/test/setup.ts'],
+		coverage: {
+			reporter: ['json-summary', 'text'],
+			include: ['src/lib/**/*.ts'],
+			exclude: ['src/**/*.d.ts']
+		}
 	}
 });

@@ -101,7 +101,7 @@ describe('pages', () => {
 				})
 			);
 
-			const comments = await getComments();
+			const comments = await getComments(3);
 			expect(comments.length).toBe(1);
 			expect(comments[0]).toEqual({
 				author: 'kurozenzen',

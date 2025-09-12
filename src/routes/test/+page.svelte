@@ -18,6 +18,7 @@
 	import SettingsLink from '$lib/components/kurosearch/settings-link/SettingsLink.svelte';
 	import defaultUserSrc from '$lib/assets/default-user.png';
 	import { resolve } from '$app/paths';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	const tagTypeLetters = Object.fromEntries(
 		Object.keys(TAG_TYPES_WITH_ICONS).map((t) => [t, t.charAt(0)])
@@ -32,7 +33,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - Component Test</title>
+	<title>{APP_NAME} - Component Test</title>
 </svelte:head>
 
 <Heading1>Testing</Heading1>

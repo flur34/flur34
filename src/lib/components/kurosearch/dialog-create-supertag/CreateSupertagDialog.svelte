@@ -4,7 +4,7 @@
 	import DetailedTag from '$lib/components/kurosearch/tag-detailed/DetailedTag.svelte';
 
 	interface Props {
-		dialog: HTMLDialogElement | undefined;
+		dialog: HTMLDialogElement;
 		name?: string;
 		description?: string;
 		tags: kurosearch.ModifiedTag[];

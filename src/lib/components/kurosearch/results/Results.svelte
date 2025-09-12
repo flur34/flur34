@@ -3,6 +3,7 @@
 	import resultColumns from '$lib/store/result-columns-store';
 	import results from '$lib/store/results-store';
 	import FullscreenPost from '../fullscreen-post/FullscreenPost.svelte';
+	import { pausePlayingVideo } from '../media-video/Video.svelte';
 	import MosaicPost from '../post/MosaicPost.svelte';
 	import SingleColumnPost from '../post/SingleColumnPost.svelte';
 
@@ -14,12 +15,19 @@
 	let { onendreached }: Props = $props();
 
 	let fullscreenIndex: undefined | number = $state(undefined);
+	let fullscreenCurrentTime: undefined | number = $state(undefined);
 
 	const exitFullscreen = (postIndex: number) => {
 		const post = $results.posts[postIndex];
 		const id = getPostId(post.id);
 		document.getElementById(id)?.scrollIntoView();
 		fullscreenIndex = undefined;
+	};
+
+	const onfullscreen = (index: number, currentTime?: number) => {
+		pausePlayingVideo();
+		fullscreenIndex = index;
+		fullscreenCurrentTime = currentTime;
 	};
 
 	$effect(() => {
@@ -36,29 +44,24 @@
 {#if $resultColumns === '1'}
 	<ol class="single-column">
 		{#each $results.posts as post, index}
-			<SingleColumnPost
-				{post}
-				onfullscreen={() => {
-					fullscreenIndex = index;
-				}}
-			/>
+			<SingleColumnPost {post} onfullscreen={(currentTime) => onfullscreen(index, currentTime)} />
 		{/each}
 	</ol>
 {:else}
 	<ol class="multi-column" style="--nr-columns: {$resultColumns}; ">
 		{#each $results.posts as post, index}
-			<MosaicPost
-				{post}
-				onclick={() => {
-					fullscreenIndex = index;
-				}}
-			/>
+			<MosaicPost {post} onclick={() => onfullscreen(index)} />
 		{/each}
 	</ol>
 {/if}
 
 {#if fullscreenIndex !== undefined}
-	<FullscreenPost index={fullscreenIndex} onclose={exitFullscreen} {onendreached} />
+	<FullscreenPost
+		index={fullscreenIndex}
+		onclose={exitFullscreen}
+		{onendreached}
+		startAt={fullscreenCurrentTime}
+	/>
 {/if}
 
 <style lang="scss">

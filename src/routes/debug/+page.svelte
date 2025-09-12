@@ -11,10 +11,11 @@
 		supportsObjectFit,
 		supportsSessionStorage
 	} from '$lib/logic/feature-support';
+	import { APP_NAME } from '$lib/logic/app-name.js';
 </script>
 
 <svelte:head>
-	<title>kurosearch - Debugger</title>
+	<title>{APP_NAME} - Debugger</title>
 	<meta name="description" content="Debugging tools for kurosearch." />
 </svelte:head>
 

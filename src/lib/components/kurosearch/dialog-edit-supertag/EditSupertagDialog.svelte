@@ -8,7 +8,7 @@
 	import ModifiedTag from '../tag-modified/ModifiedTag.svelte';
 
 	interface Props {
-		dialog: HTMLDialogElement | undefined;
+		dialog: HTMLDialogElement;
 		supertag: kurosearch.Supertag;
 		onedit: (oldName: string, newSupertag: kurosearch.Supertag) => void;
 		onclose?: () => void;

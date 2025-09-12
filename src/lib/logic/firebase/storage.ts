@@ -11,10 +11,8 @@ import {
 } from 'firebase/firestore';
 import type { SettingsObject } from '../file-utils';
 import { createSearchableTag, createSupertag } from '../tag-utils';
-import { logFirestoreRead, logFirestoreWrite } from './analytics';
 
 export const getSettingsAndSupertags = async () => {
-	await logFirestoreRead();
 	const settings = await getPreferences();
 	const supertags = await getSupertags();
 
@@ -106,7 +104,6 @@ export const saveSettingsAndSupertags = async (
 	settings: SettingsObject,
 	supertags: kurosearch.Supertag[]
 ) => {
-	logFirestoreWrite();
 	await setPreferences(settings);
 	await setSupertags(supertags);
 };

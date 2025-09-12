@@ -5,7 +5,9 @@ namespace kurosearch {
 		| 'Gore'
 		| 'Scat'
 		| 'AI-Generated'
-		| 'Vore';
+		| 'Vore'
+		| 'Yuri'
+		| 'Yaoi';
 	type TagModifier = '+' | '-' | '~';
 	type TagType =
 		| 'general'

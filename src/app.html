@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" class="dark">
 	<head>
-		<title>Kurosearch - Rule34 Hentai</title>
+		<title>flur34 - Rule34 browser</title>
 		<meta
 			name="description"
 			content="Simple and powerful Rule34 browsing site with a focus on simplicity and user experience. This app supports advanced features like excluding tags and sorting and filtering based on score."
@@ -16,13 +16,8 @@
 		<meta name="mobile-web-app-capable" content="yes" />
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/icon/ks-192.png" sizes="192x192" />
 		<link rel="mask-icon" href="%sveltekit.assets%/favicon.svg" color="#000" />
-		<!-- 
-		<link rel="preload" href="https://rule34-api.netlify.app/count?tags=sort:id:desc" as="fetch" />
-		<link
-			rel="preload"
-			href="https://rule34-api.netlify.app/count?limit=20&pid=0&tags=sort:id:desc"
-			as="fetch"
-		/> -->
+		<link rel="preload" href="/api/posts?tags=sort:id:desc" as="fetch" />
+		<link rel="preload" href="/api/posts?limit=20&pid=0&tags=sort:id:desc" as="fetch" />
 	</head>
 
 	<body data-sveltekit-preload-data="hover">

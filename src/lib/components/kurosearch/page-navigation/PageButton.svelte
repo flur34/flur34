@@ -15,7 +15,7 @@
 	{pageLabel(pid)}
 </button>
 
-<style>
+<style lang="scss">
 	button {
 		display: inline-flex;
 		align-items: center;
@@ -31,10 +31,10 @@
 	@media (hover: hover) {
 		button {
 			transition: background-color var(--default-transition-behaviour);
-		}
 
-		button:hover {
-			background-color: var(--background-2);
+			&:hover {
+				background-color: var(--background-2);
+			}
 		}
 	}
 </style>

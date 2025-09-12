@@ -19,7 +19,7 @@ describe('format-tag', () => {
 
 	const invalidCountCases = [undefined, null, 'a', {}, []];
 	invalidCountCases.forEach((count) => {
-		it(`tag with invalid name (${name}) renders only name`, () => {
+		it(`tag with invalid count (${count}) renders only name`, () => {
 			expect(formatActiveTag({ name: 'tag', count })).toBe('tag');
 		});
 	});

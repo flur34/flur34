@@ -28,6 +28,8 @@
 		font-size: var(--text-size);
 		padding-inline: 6px;
 		user-select: none;
+		width: 100%;
+		background-color: transparent;
 
 		&:focus,
 		&.selected {
@@ -48,5 +50,6 @@
 		grid-column: 2;
 		white-space: nowrap;
 		overflow: hidden;
+		text-align: left;
 	}
 </style>

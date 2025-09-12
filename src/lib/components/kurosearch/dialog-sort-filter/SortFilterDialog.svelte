@@ -16,7 +16,7 @@
 	} from '../sort-filter-config/sortfilter';
 
 	interface Props {
-		dialog: HTMLDialogElement | undefined;
+		dialog: HTMLDialogElement;
 		onclose: () => void;
 	}
 

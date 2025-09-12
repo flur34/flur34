@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { getPage, getPostsUrl } from './posts';
-import { API_URL } from '../url';
+import { mockFetch, makeResponse } from '../../../../test/mocks/fetch';
 
-const originalFetch = global.fetch;
+const originalFetch = global.fetch as any;
 
 describe('posts', () => {
 	afterEach(() => {
@@ -10,29 +10,29 @@ describe('posts', () => {
 	});
 
 	describe('getPage', () => {
-		it('response not ok throws Error', () => {
-			//@ts-expect-error
-			global.fetch = vi.fn(() => Promise.resolve({ ok: false }));
-			getPage(0, '').catch((e) => expect(e).toBeInstanceOf(Error));
+		it('response not ok throws Error', async () => {
+			mockFetch(async () => new Response('nope', { status: 500 }));
+			await expect(getPage(0, '')).rejects.toBeInstanceOf(Error);
 		});
 
-		it('empty response return []', () => {
-			//@ts-expect-error
-			global.fetch = vi.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve(null) }));
-			getPage(0, '').catch((e) => expect(e).toBeInstanceOf(Error));
+		it('empty/invalid json response yields [] (handled with warning)', async () => {
+			// Return invalid JSON that will cause parseJson to fall back/throw path, which getPage catches and returns []
+			mockFetch(async () => makeResponse({ text: 'not-json' }));
+			const res = await getPage(0, '');
+			expect(res).toEqual([]);
 		});
 	});
 
 	describe('getPostsUrl', () => {
 		it('does not include tags when they are empty', () => {
 			expect(getPostsUrl(0, '', '', '')).toBe(
-				`${API_URL}?page=dapi&s=post&q=index&fields=tag_info&json=1&limit=20&pid=0`
+				`http://localhost:3000/api/posts?fields=tag_info&limit=20&pid=0`
 			);
 		});
 
 		it('includes tags when they are not empty', () => {
 			expect(getPostsUrl(0, 'example', '', '')).toBe(
-				`${API_URL}?page=dapi&s=post&q=index&fields=tag_info&json=1&limit=20&pid=0&tags=example`
+				`http://localhost:3000/api/posts?fields=tag_info&limit=20&pid=0&tags=example`
 			);
 		});
 	});

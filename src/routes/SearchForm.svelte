@@ -12,10 +12,10 @@
 	import { addHistory } from '$lib/logic/use/onpopstate';
 	import activeSupertags from '$lib/store/active-supertags-store';
 	import activeTags from '$lib/store/active-tags-store';
-	import apiKey from '$lib/store/api-key-store';
 	import results from '$lib/store/results-store';
 	import supertags from '$lib/store/supertags-store';
 	import userId from '$lib/store/user-id-store';
+	import apiKey from '$lib/store/api-key-store';
 	import { onDestroy, onMount } from 'svelte';
 
 	interface Props {
@@ -25,7 +25,7 @@
 
 	let { loading, onsubmit }: Props = $props();
 
-	let createSupertagDialog: HTMLDialogElement | undefined = $state(undefined);
+	let createSupertagDialog: HTMLDialogElement = $state<HTMLDialogElement>() as HTMLDialogElement;
 
 	const fetchSuggestions = async (term: string) => {
 		const matchingTags = await getTagSuggestions(term);

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
-	import NumberInput from '../dialog-sort-filter/NumberInput.svelte';
-	import results from '$lib/store/results-store';
 	import { PAGE_SIZE } from '$lib/logic/api-client/ApiClient';
+	import results from '$lib/store/results-store';
+	import NumberInput from '../dialog-sort-filter/NumberInput.svelte';
 
 	interface Props {
 		onpagechange: (newPage: number) => void;
@@ -28,7 +28,7 @@
 	</TextButton>
 </div>
 
-<style>
+<style lang="scss">
 	div {
 		display: flex;
 		gap: 0.5rem;

@@ -15,6 +15,7 @@
 		color: var(--text-highlight);
 		font-size: var(--text-size-h1);
 		padding-block: 4rem;
+		text-transform: capitalize;
 	}
 
 	@media (max-width: 420px) {

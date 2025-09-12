@@ -9,7 +9,6 @@
 	import IntersectionDetector from '$lib/components/pure/intersection-detector/IntersectionDetector.svelte';
 	import LoadingAnimation from '$lib/components/pure/loading-animation/LoadingAnimation.svelte';
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
-	import { logSearch } from '$lib/logic/firebase/analytics';
 	import { SearchBuilder } from '$lib/logic/search-builder';
 	import activeSupertags from '$lib/store/active-supertags-store';
 	import activeTags from '$lib/store/active-tags-store';
@@ -25,6 +24,7 @@
 	import pageNavigationEnabled from '$lib/store/page-navigation-enabled-store';
 	import PageNavigation from '$lib/components/kurosearch/page-navigation/PageNavigation.svelte';
 	import PageJump from '$lib/components/kurosearch/page-navigation/PageJump.svelte';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	let loading = $state(false);
 	let error: Error | undefined = $state();
@@ -53,9 +53,7 @@
 		loading = true;
 
 		try {
-			const pid = $results.pageCount;
 			await operation();
-			logSearch(pid).catch(() => {});
 		} catch (e) {
 			error = e as Error;
 			console.warn(e);
@@ -78,7 +76,7 @@
 		results.resetPosts();
 		nextFocus = 0;
 
-		executeSearch(async () => {
+		await executeSearch(async () => {
 			const page = await createDefaultSearch().withPid(pid).getPage();
 			results.setPage(page, pid);
 		});
@@ -121,7 +119,7 @@
 </script>
 
 <svelte:head>
-	<title>kurosearch - Rule34 Hentai</title>
+	<title>{APP_NAME} - Rule34 Hentai</title>
 	<meta
 		name="description"
 		content="Simple and powerful Rule34 browsing site with a focus on simplicity and user experience."

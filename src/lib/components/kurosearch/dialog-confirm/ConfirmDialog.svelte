@@ -4,7 +4,7 @@
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
 
 	interface Props {
-		dialog: HTMLDialogElement | undefined;
+		dialog: HTMLDialogElement;
 		title: string;
 		warning: string;
 		labelConfirm: string;

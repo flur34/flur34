@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import TermsOfUseDialog from '$lib/components/kurosearch/dialog-terms-of-use/CookieMessage.svelte';
 	import AccountLink from '$lib/components/kurosearch/link-account/AccountLink.svelte';
 	import DiscordLink from '$lib/components/kurosearch/link-discord/DiscordLink.svelte';
@@ -27,6 +27,8 @@
 	let { children }: Props = $props();
 
 	const userPhoto: string | undefined = undefined;
+
+	const year = new Date().getFullYear();
 
 	theme.subscribe((value) => {
 		if (browser) {
@@ -64,28 +66,45 @@
 	</nav>
 </header>
 
-<main class:extra-wide={$wideLayoutEnabled && $page.url.pathname === '/'}>
+<main class:extra-wide={$wideLayoutEnabled && page.url.pathname === '/'}>
 	{@render children?.()}
 </main>
 
 <footer>
-	<section>
-		<CodiconTextLink
-			title="Source Code"
-			href="https://github.com/kurozenzen/kurosearch"
-			icon="codicon codicon-github"
-			label="Github"
-			target="_blank"
-		/>
+	<section class="footer">
+		<span class="stacked-tags">
+			<CodiconTextLink
+				title="Source Code"
+				href="https://github.com/kurozenzen/kurosearch"
+				icon="codicon codicon-github"
+				label="Github KuroSearch"
+				target="_blank"
+			/>
+			<CodiconTextLink
+				title="Source Code Docker"
+				href="https://github.com/flurbudurbur/kurosearch"
+				icon="codicon codicon-github"
+				label="Github KuroSearch Docker"
+				target="_blank"
+			/>
+		</span>
 
-		<span class="copyright">© 2023 kurozenzen</span>
+		<span class="copyright">&copy; {year} kurozenzen</span>
 
-		<CodiconTextLink
-			title="About"
-			href={resolve('/about')}
-			icon="codicon codicon-info"
-			label="About"
-		/>
+		<span class="stacked-tags">
+			<CodiconTextLink
+				title="About"
+				href={resolve('/about')}
+				icon="codicon codicon-info"
+				label="About"
+			/>
+			<CodiconTextLink
+				title="Instances"
+				href={resolve('/instances')}
+				icon="codicon codicon-server"
+				label="Instances"
+			/>
+		</span>
 	</section>
 	<p>
 		I do not own the rights to Helheim Lynx and this site is in no way endorsed by, affiliated with,
@@ -101,6 +120,17 @@
 		width: 100%;
 		align-items: center;
 		overflow-y: scroll;
+	}
+
+	.stacked-tags {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.footer {
+		display: flex;
+		align-items: flex-start;
 	}
 
 	nav,

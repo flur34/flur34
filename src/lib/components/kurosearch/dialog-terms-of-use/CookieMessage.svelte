@@ -6,6 +6,7 @@
 	const accept = () => {
 		$cookiesAccepted = true;
 		document.documentElement.dataset.cookies = 'true';
+		localStorage.setItem('Kurosearch:cookies-accepted', 'true');
 	};
 
 	const leave = () => {
@@ -50,6 +51,13 @@
 		padding: var(--grid-gap);
 		max-width: 500px;
 		border-radius: var(--border-radius-large);
+
+		// Child layout
+		.row {
+			align-self: center;
+			display: flex;
+			gap: var(--grid-gap);
+		}
 	}
 
 	h1 {
@@ -104,11 +112,5 @@
 			border: solid 2px crimson;
 			box-shadow: 0 0 100px 100px black;
 		}
-	}
-
-	.row {
-		align-self: center;
-		display: flex;
-		gap: var(--grid-gap);
 	}
 </style>

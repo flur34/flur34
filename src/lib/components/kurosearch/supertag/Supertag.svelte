@@ -12,8 +12,8 @@
 
 	let { supertag, onremove, onedit }: Props = $props();
 
-	let deleteDialog: HTMLDialogElement | undefined = $state(undefined);
-	let editDialog: HTMLDialogElement | undefined = $state(undefined);
+	let deleteDialog = $state<HTMLDialogElement>() as HTMLDialogElement;
+	let editDialog = $state<HTMLDialogElement>() as HTMLDialogElement;
 </script>
 
 <li>

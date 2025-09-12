@@ -1,48 +1,63 @@
-<script lang="ts">
-	import FullscreenProgress from './FullscreenProgress.svelte';
+<script module lang="ts">
 	import autoplayFullscreenDelay from '$lib/store/autoplay-fullscreen-delay-store';
-	import LoadingAnimation from '$lib/components/pure/loading-animation/LoadingAnimation.svelte';
-	import { getGifSources } from '$lib/logic/media-utils';
 	import autoplayFullscreenEnabled from '$lib/store/autoplay-fullscreen-enabled-store';
+
+	let enabled = false;
+	let delay = 15;
+
+	let duration: number | undefined = $state(undefined);
+
+	autoplayFullscreenEnabled.subscribe((value) => {
+		enabled = value;
+		duration = enabled ? delay : undefined;
+	});
+	autoplayFullscreenDelay.subscribe((value) => {
+		delay = value;
+		duration = enabled ? delay : undefined;
+	});
+</script>
+
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<script lang="ts">
+	import { browser } from '$app/environment';
 	import highResolutionEnabled from '$lib/store/high-resolution-enabled';
 	import { onDestroy, onMount } from 'svelte';
-	import { browser } from '$app/environment';
+	import PostOverlay from '../post-overlay/PostOverlay.svelte';
 
 	interface Props {
 		post: kurosearch.Post;
 		postId?: number;
+		ondetails: () => void;
 		onended?: () => void;
 	}
 
-	let { post, postId = -1, onended }: Props = $props();
+	let { post, postId = -1, onended, ondetails }: Props = $props();
 
-	const getSources = (type: string, file_url: string, sample_url: string, preview_url: string) => {
-		if (type === 'gif') {
-			const gifSources = getGifSources(file_url, sample_url, preview_url);
-			return [gifSources.static, gifSources.animated];
-		}
-
-		return highResolutionEnabled ? [sample_url, file_url] : [preview_url, sample_url];
-	};
-
-	let [previewSrc, fullSrc] = $derived(
-		getSources(post.type, post.file_url, post.sample_url, post.preview_url)
+	let sources = $derived(
+		highResolutionEnabled ? [post.sample_url, post.file_url] : [post.preview_url, post.sample_url]
 	);
 
 	let currentTime = $state(0);
-	let lastFrameTime = $state(Date.now());
-	let currentFrameTime = $state(Date.now());
-	let difference: number;
-	let paused = true;
+	let paused = $state(!$autoplayFullscreenEnabled);
+	let loading = $state(true);
+
+	let overlayHidden = $state(true);
+	const onclick = (e: Event) => {
+		e.stopPropagation();
+		overlayHidden = !overlayHidden;
+	};
+
 	let animationHandle: number;
+
+	let lastFrameTime = Date.now();
 
 	const updateSlider = () => {
 		// frame times
-		currentFrameTime = Date.now();
-		difference = currentFrameTime - lastFrameTime;
+		const currentFrameTime = Date.now();
+		const difference = currentFrameTime - lastFrameTime;
 		lastFrameTime = currentFrameTime;
 
-		if (!paused) {
+		if (!paused && !loading) {
 			currentTime += difference / 1000;
 		}
 
@@ -54,7 +69,7 @@
 		animationHandle = requestAnimationFrame(updateSlider);
 	};
 
-	const togglePaused = () => {
+	const ontoggleplay = () => {
 		paused = !paused;
 	};
 
@@ -106,48 +121,38 @@
 		cancelAnimationFrame(animationHandle);
 		document.removeEventListener('keydown', keybinds);
 	});
-
-	const preload = (src: string) => {
-		return new Promise((resolve) => {
-			paused = true;
-			let img = new Image();
-			img.onload = (e) => {
-				resolve(e);
-				paused = false;
-			};
-			img.src = src;
-		});
-	};
 </script>
 
-{#await preload(fullSrc)}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-	<img
-		src={previewSrc}
-		alt="[{post.type}] post #{post.id}"
-		title="[{post.type}] post #{post.id}"
-		oncontextmenu={(e) => e.preventDefault()}
-		onclick={togglePaused}
-	/>
-	<div>
-		<LoadingAnimation />
-	</div>
-{:then _}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-	<img
-		src={fullSrc}
-		alt="[{post.type}] post #{post.id}"
-		title="[{post.type}] post #{post.id}"
-		oncontextmenu={(e) => e.preventDefault()}
-		onclick={togglePaused}
-		use:pauseoffscreen
-	/>
-{/await}
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<img
+	src={sources[1]}
+	alt="[{post.type}] post #{post.id}"
+	title="[{post.type}] post #{post.id}"
+	use:pauseoffscreen
+	onload={() => (loading = false)}
+	{onclick}
+/>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<img
+	src={sources[0]}
+	alt="[{post.type}] post #{post.id}"
+	title="[{post.type}] post #{post.id}"
+	{onclick}
+/>
 
 {#if $autoplayFullscreenEnabled}
-	<FullscreenProgress bind:value={currentTime} max={$autoplayFullscreenDelay} type="image" />
+	<PostOverlay
+		hidden={overlayHidden}
+		mediaType="img"
+		{paused}
+		{loading}
+		{ontoggleplay}
+		bind:currentTime
+		{duration}
+		{ondetails}
+	/>
 {/if}
 
 <style lang="scss">
@@ -156,23 +161,6 @@
 		width: 100vw;
 		height: 100vh;
 		object-fit: contain;
-		contain: paint;
-
-		scroll-snap-align: start;
-		scroll-snap-stop: always;
-	}
-
-	div {
-		position: absolute;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background-color: #0008;
-		width: 48px;
-		height: 48px;
-		border-radius: 24px;
+		contain: strict;
 	}
 </style>

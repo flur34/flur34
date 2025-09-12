@@ -14,7 +14,7 @@
 	const serializeSortFilter = (sort: SortStoreData, filter: FilterStoreData) =>
 		JSON.stringify(Object.assign({}, sort, filter));
 
-	let dialog: HTMLDialogElement | undefined = $state(undefined);
+	let dialog: HTMLDialogElement = $state<HTMLDialogElement>() as HTMLDialogElement;
 	let sortFilterBefore = '';
 
 	let filterLabel = $derived(

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseShareTags } from './share-utils';
+import { parseShareTags, serializeShareTags } from './share-utils';
 
 describe('Parsing', () => {
 	describe('search', () => {
@@ -31,5 +31,17 @@ describe('Parsing', () => {
 				parseShareTags('+samus_aran;+animated;-cum_in_pussy;~cum_in_ass;~cum_in_mouth')
 			).toEqual(expectedTags);
 		});
+	});
+});
+
+describe('Serialize', () => {
+	it('joins tags with semicolons and serializes spaces to underscores', () => {
+		const tags: kurosearch.SearchableTag[] = [
+			{ name: 'mega man', modifier: '+' },
+			{ name: 'zero suit', modifier: '-' },
+			{ name: 'roll caskett', modifier: '~' }
+		];
+
+		expect(serializeShareTags(tags)).toBe('+mega_man;-zero_suit;~roll_caskett');
 	});
 });

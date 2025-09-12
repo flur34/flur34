@@ -44,7 +44,7 @@
 </div>
 <PageJump {onpagechange} />
 
-<style>
+<style lang="scss">
 	div {
 		display: flex;
 		gap: 0.5rem;

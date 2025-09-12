@@ -3,6 +3,7 @@
 /package
 /node_modules
 /test-results
+/coverage
 .*
 
 vite.config.*.timestamp-*
@@ -13,3 +14,4 @@ vite.config.*.timestamp-*
 !*ignore
 !*rc
 !.husky
+!.node-version

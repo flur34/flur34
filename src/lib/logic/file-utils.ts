@@ -13,7 +13,7 @@ export const saveFile = async (content: string) => {
 	try {
 		const filename = 'kurosearch-config.json';
 		if ('showSaveFilePicker' in window) {
-			// @ts-expect-error - too new i guess
+			// @ts-expect-error - Too new, I guess
 			const handle = await showSaveFilePicker({ suggestedName: filename });
 			const writable = await handle.createWritable();
 			await writable.write(content);
@@ -34,7 +34,7 @@ export const saveFile = async (content: string) => {
 export const loadFile = async (): Promise<string> => {
 	try {
 		if ('showOpenFilePicker' in window) {
-			// @ts-expect-error - too new i guess
+			// @ts-expect-error - Too new I guess
 			const [handle] = await showOpenFilePicker();
 			const file = await handle.getFile();
 			return await file.text();
