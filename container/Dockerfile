@@ -3,7 +3,7 @@
 # Common args
 ARG PNPM_VERSION=10.15.1
 ARG PLAYWRIGHT_BROWSERS="chromium"
-ARG PROJECT_VERSION=1.0.0
+ARG PROJECT_VERSION=1.0.1
 
 FROM node:lts-bookworm AS node-tests
 WORKDIR /app
