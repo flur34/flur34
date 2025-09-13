@@ -1,5 +1,6 @@
 import type { StoreKey } from '$lib/store/store-keys';
 import type { SupertagsStore } from '$lib/store/supertags-store';
+import type { SavedPostsStore } from '$lib/store/saved-posts-store';
 
 export interface SettingsObject {
 	[StoreKey.LocalstorageEnabled]: boolean;
@@ -7,6 +8,7 @@ export interface SettingsObject {
 	[StoreKey.BlockedContent]: Record<kurosearch.BlockingGroup, boolean>;
 	[StoreKey.ResultColumns]: string;
 	[StoreKey.Supertags]: SupertagsStore;
+	[StoreKey.SavedPosts]: SavedPostsStore;
 }
 
 export const saveFile = async (content: string) => {

@@ -199,6 +199,7 @@
 	>
 		<TextButton
 			title="Reset preferences"
+			type="secondary"
 			onclick={() => {
 				resetDialog?.showModal();
 				addHistory('dialog');

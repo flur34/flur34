@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { APP_NAME } from '$lib/logic/app-name';
+import { APP_NAME } from '$lib/logic/app-config';
 
 const indexPage = 'http://localhost:4173/';
 
