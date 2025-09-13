@@ -2,6 +2,7 @@
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
 	import cookiesAccepted from '$lib/store/cookies-accepted-store';
 	import LynxMain from '../../../../routes/LynxMain.svelte';
+	import { APP_NAME } from '$lib/logic/app-name';
 
 	const accept = () => {
 		$cookiesAccepted = true;
@@ -24,7 +25,7 @@
 <div id="cookie-dialog" class="backdrop">
 	<section>
 		<LynxMain />
-		<h1>kurosearch</h1>
+		<h1>{APP_NAME}</h1>
 		<h2>Terms of Use</h2>
 		<span></span>
 		<h3>Mature Content</h3>

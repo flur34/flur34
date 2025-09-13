@@ -61,6 +61,7 @@
 		<CodiconLink title="Documentation" href={resolve('/help')} icon="codicon codicon-book" />
 		<div></div>
 		<CodiconLink title="Search" href={resolve('/')} icon="codicon codicon-search" />
+		<CodiconLink title="Saved Posts" href={resolve('/saved')} icon="codicon codicon-notebook" />
 		<SettingsLink />
 		<AccountLink src={userPhoto} />
 	</nav>

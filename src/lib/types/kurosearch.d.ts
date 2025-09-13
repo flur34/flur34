@@ -74,4 +74,7 @@ namespace kurosearch {
 		createdAt: string;
 		content: string;
 	};
+	type SavedPost = {
+		id: number;
+	};
 }
