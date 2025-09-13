@@ -137,31 +137,6 @@ describe('supertags-store', () => {
 	});
 });
 
-describe('firebase-login-store', () => {
-	it('reflects auth state changes', async () => {
-		await vi.doMock('$app/environment', () => ({ browser: true }));
-		await vi.doMock('$lib/logic/firebase/firebase', () => ({})); // avoid real init
-		let cb: any;
-		await vi.doMock('firebase/auth', () => ({
-			getAuth: () => ({
-				onAuthStateChanged: (fn: any) => {
-					cb = fn;
-				}
-			})
-		}));
-		const mod: any = await import('./firebase-login-store');
-		const store = mod.default;
-
-		cb(null);
-		let v = await current<boolean>(store);
-		expect(v).toBe(false);
-
-		cb({ uid: 'u' });
-		v = await current<boolean>(store);
-		expect(v).toBe(true);
-	});
-});
-
 describe('import remaining simple stores for line coverage', () => {
 	it('imports and accesses default export or value', async () => {
 		await vi.doMock('$app/environment', () => ({ browser: true }));

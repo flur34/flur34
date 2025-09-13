@@ -54,10 +54,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		return new Response(JSON.stringify({ code }), {
 			headers: { 'Content-Type': 'application/json' }
 		});
-
 	} catch (err) {
 		console.error('Error in sync POST handler:', err);
-		throw error(500, `Failed to generate sync code: ${err instanceof Error ? err.message : 'Unknown error'}`);
+		throw error(
+			500,
+			`Failed to generate sync code: ${err instanceof Error ? err.message : 'Unknown error'}`
+		);
 	}
 };
 
@@ -73,7 +75,6 @@ export const _getTempFile = (code: string): TempFile | undefined => {
 	}
 	return entry;
 };
-
 
 export const _consumeTempFile = async (code: string): Promise<string | undefined> => {
 	const entry = tempFiles.get(code);

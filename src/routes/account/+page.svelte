@@ -122,12 +122,12 @@
 			inputCode = '';
 		} catch (error) {
 			console.error('Error submitting code:', error);
-			syncMessage = error instanceof Error ? error.message : 'Failed to load config. Please try again.';
+			syncMessage =
+				error instanceof Error ? error.message : 'Failed to load config. Please try again.';
 		} finally {
 			isSubmitting = false;
 		}
 	};
-
 
 	let resetDialog: HTMLDialogElement = $state<HTMLDialogElement>() as HTMLDialogElement;
 </script>
@@ -148,7 +148,8 @@
 					active.
 				</p>
 				<p>
-					NOTE: If you had supertags before, please try signing in with Google below and loading them.
+					NOTE: If you had supertags before, please try signing in with Google below and loading
+					them.
 				</p>
 			{/if}
 			<ul>
@@ -157,8 +158,8 @@
 						{supertag}
 						onremove={(supertag) => supertags.remove(supertag)}
 						onedit={(oldName, newSupertag) => {
-						supertags.update(oldName, newSupertag);
-					}}
+							supertags.update(oldName, newSupertag);
+						}}
 					/>
 				{/each}
 			</ul>
@@ -186,41 +187,33 @@
 		<Heading3>One-time Sync</Heading3>
 		<p>Sync your config with a one-time code. Available during 5 minutes.</p>
 		<div class="button-row">
-			<TextButton
-				title="Generate code"
-				onclick={generateCode}
-				disabled={isGenerating}
-			>
+			<TextButton title="Generate code" onclick={generateCode} disabled={isGenerating}>
 				{isGenerating ? 'Generating...' : 'Generate your code'}
 			</TextButton>
 			<div>
-				<input
-					type="text"
-					placeholder="Code"
-					bind:value={inputCode}
-					disabled={isSubmitting}
-				/>
-				<button
-					type="submit"
-					onclick={submitCode}
-					disabled={isSubmitting || !inputCode.trim()}
-				>
+				<input type="text" placeholder="Code" bind:value={inputCode} disabled={isSubmitting} />
+				<button type="submit" onclick={submitCode} disabled={isSubmitting || !inputCode.trim()}>
 					{isSubmitting ? 'Loading...' : 'Submit'}
 				</button>
 			</div>
 		</div>
 		{#if syncMessage}
-			<p class="sync-message"
-				 class:error={syncMessage.includes('Failed') || syncMessage.includes('not found')}>{syncMessage}</p>
+			<p
+				class="sync-message"
+				class:error={syncMessage.includes('Failed') || syncMessage.includes('not found')}
+			>
+				{syncMessage}
+			</p>
 		{/if}
 		{#if generatedCode}
 			<div class="generated-code">
 				<p><strong>Your code:</strong> {generatedCode}</p>
-				<p class="code-note">Share this code with another device to sync your config. Valid for 5 minutes.</p>
+				<p class="code-note">
+					Share this code with another device to sync your config. Valid for 5 minutes.
+				</p>
 			</div>
 		{/if}
 	</section>
-
 
 	<section class="danger">
 		<h2>Danger Zone</h2>
@@ -232,9 +225,9 @@
 			<TextButton
 				title="Delete all your data."
 				onclick={() => {
-			resetDialog?.showModal();
-			addHistory('dialog');
-		}}
+					resetDialog?.showModal();
+					addHistory('dialog');
+				}}
 				type="secondary"
 			>
 				Delete Data
@@ -253,71 +246,70 @@
 />
 
 <style lang="scss">
-  article {
-    padding-inline: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    max-width: 800px;
-    margin-inline: auto;
-  }
+	article {
+		padding-inline: 8px;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		max-width: 800px;
+		margin-inline: auto;
+	}
 
-  p {
-    margin-block-end: var(--grid-gap);
-  }
+	p {
+		margin-block-end: var(--grid-gap);
+	}
 
-  .codicon::before {
-    margin-right: var(--tiny-gap);
-  }
+	.codicon::before {
+		margin-right: var(--tiny-gap);
+	}
 
-  .danger {
-    background-color: rgba(255, 0, 0, 0.15);
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(255, 0, 0, 0.25);
-    padding: 8px;
-    margin: 1rem 0;
-  }
+	.danger {
+		background-color: rgba(255, 0, 0, 0.15);
+		border-radius: var(--border-radius);
+		border: 1px solid rgba(255, 0, 0, 0.25);
+		padding: 8px;
+		margin: 1rem 0;
+	}
 
-  .button-row {
-    display: flex;
-    flex-direction: row;
-    place-content: space-between;
-    place-items: center;
-    border-top: 1px solid rgba(255, 0, 0, 0.20);
-    margin-top: 0.5rem;
-  }
+	.button-row {
+		display: flex;
+		flex-direction: row;
+		place-content: space-between;
+		place-items: center;
+		border-top: 1px solid rgba(255, 0, 0, 0.2);
+		margin-top: 0.5rem;
+	}
 
-  .danger-description {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+	.danger-description {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
 
-  .sync-message {
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    border-radius: var(--border-radius);
-    background-color: rgba(0, 255, 0, 0.1);
-    border: 1px solid rgba(0, 255, 0, 0.3);
+	.sync-message {
+		margin-top: 0.5rem;
+		padding: 0.5rem;
+		border-radius: var(--border-radius);
+		background-color: rgba(0, 255, 0, 0.1);
+		border: 1px solid rgba(0, 255, 0, 0.3);
 
-    &.error {
-      background-color: rgba(255, 0, 0, 0.1);
-      border-color: rgba(255, 0, 0, 0.3);
-    }
-  }
+		&.error {
+			background-color: rgba(255, 0, 0, 0.1);
+			border-color: rgba(255, 0, 0, 0.3);
+		}
+	}
 
-  .generated-code {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: var(--background-secondary);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
+	.generated-code {
+		margin-top: 1rem;
+		padding: 1rem;
+		background-color: var(--background-secondary);
+		border-radius: var(--border-radius);
+		border: 1px solid var(--border-color);
 
-    .code-note {
-      font-size: 0.9em;
-      opacity: 0.8;
-      margin-top: 0.5rem;
-    }
-  }
-
+		.code-note {
+			font-size: 0.9em;
+			opacity: 0.8;
+			margin-top: 0.5rem;
+		}
+	}
 </style>

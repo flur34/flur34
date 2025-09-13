@@ -53,19 +53,18 @@
 		margin: 1rem 1rem 0.5rem 1rem;
 	}
 
-  span {
-    max-width: 400px;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
+	span {
+		max-width: 400px;
+		word-wrap: break-word;
+		hyphens: auto;
+	}
 
-
-  h2 {
-    color: var(--text-highlight);
-    font-size: var(--text-size-h3);
-    padding-block-start: 1rem;
-    padding-block-end: var(--grid-gap);
-  }
+	h2 {
+		color: var(--text-highlight);
+		font-size: var(--text-size-h3);
+		padding-block-start: 1rem;
+		padding-block-end: var(--grid-gap);
+	}
 
 	@media (min-width: 768px) {
 		.options {
