@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { createModifiedTag, createTag, createSupertag, createSearchableTag } from '$lib/logic/tag-utils';
+import {
+	createModifiedTag,
+	createTag,
+	createSupertag,
+	createSearchableTag
+} from '$lib/logic/tag-utils';
 
 // The functions in tag-utils are plain factories; we test that they return
 // exactly the shapes and values we provide.

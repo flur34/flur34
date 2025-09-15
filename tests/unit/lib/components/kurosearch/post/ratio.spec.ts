@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { calculateAspectRatio, calculateAspectRatioCss } from '$lib/components/kurosearch/post/ratio';
+import {
+	calculateAspectRatio,
+	calculateAspectRatioCss
+} from '$lib/components/kurosearch/post/ratio';
 
 describe('components/kurosearch/post/ratio', () => {
 	it('calculateAspectRatio returns width/height when both provided', () => {

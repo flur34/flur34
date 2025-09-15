@@ -10,7 +10,14 @@ const setOrigin = (origin: string) => {
 };
 
 // Import SUT
-import { getPage, getPost, getCount, getPostsUrl, getCountUrl, PAGE_SIZE } from '$lib/logic/api-client/posts/posts';
+import {
+	getPage,
+	getPost,
+	getCount,
+	getPostsUrl,
+	getCountUrl,
+	PAGE_SIZE
+} from '$lib/logic/api-client/posts/posts';
 
 const delay = (ms = 10) => new Promise((r) => setTimeout(r, ms));
 

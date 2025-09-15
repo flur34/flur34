@@ -13,7 +13,7 @@ const config = {
 			base: ''
 		},
 		alias: {
-			$routes: 'src/routes',
+			$routes: 'src/routes'
 		},
 		appDir: 'app',
 		version: {

@@ -7,8 +7,6 @@ const loadModule = async (browser: boolean) => {
 	return await import('$lib/store/semi-persistent-store');
 };
 
-
-
 beforeEach(() => {
 	localStorage.clear();
 	sessionStorage.clear();
