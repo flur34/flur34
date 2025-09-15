@@ -12,6 +12,9 @@ const config = {
 		paths: {
 			base: ''
 		},
+		alias: {
+			$routes: 'src/routes',
+		},
 		appDir: 'app',
 		version: {
 			name: pkgVersion
