@@ -108,8 +108,6 @@
 				</li>
 			{/each}
 		</ul>
-	{:else if conflictingTags.length === 0 && $activeTagsStore.length >= 0}
-		<p>We couldn't connect to Rule34. Sorry...</p>
 	{:else}
 		<p>We couldn't find any posts matching your tags. Sorry...</p>
 	{/if}
