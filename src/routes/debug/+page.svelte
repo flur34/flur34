@@ -11,7 +11,7 @@
 		supportsObjectFit,
 		supportsSessionStorage
 	} from '$lib/logic/feature-support';
-	import { APP_NAME } from '$lib/logic/app-config.ts';
+	import { APP_NAME } from '$lib/logic/app-config';
 </script>
 
 <svelte:head>
