@@ -67,7 +67,7 @@
 	<title>{APP_NAME} - Preferences</title>
 	<meta
 		name="description"
-		content="Customize your kurosearch browsing experience however you like."
+		content="Customize your {APP_NAME} browsing experience however you like."
 	/>
 </svelte:head>
 
@@ -199,6 +199,7 @@
 	>
 		<TextButton
 			title="Reset preferences"
+			type="secondary"
 			onclick={() => {
 				resetDialog?.showModal();
 				addHistory('dialog');

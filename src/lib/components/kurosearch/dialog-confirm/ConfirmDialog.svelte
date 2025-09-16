@@ -31,14 +31,16 @@
 
 <Dialog {onclose} bind:dialog>
 	<div>
-		<Heading3>{title}</Heading3>
+		<h2>{title}</h2>
 		<span>{warning}</span>
-		<TextButton title="Delete supertag" onclick={confirmAndClose}>
-			{labelConfirm}
-		</TextButton>
-		<TextButton type="secondary" title="Cancel" onclick={() => dialog?.close()}>
-			{labelCancel}
-		</TextButton>
+		<div class="options">
+			<TextButton type="secondary" title="Delete supertag" onclick={confirmAndClose}>
+				{labelConfirm}
+			</TextButton>
+			<TextButton title="Cancel" onclick={() => dialog?.close()}>
+				{labelCancel}
+			</TextButton>
+		</div>
 	</div>
 </Dialog>
 
@@ -47,5 +49,26 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--grid-gap);
+		place-content: center;
+		margin: 1rem 1rem 0.5rem 1rem;
+	}
+
+	span {
+		max-width: 400px;
+		word-wrap: break-word;
+		hyphens: auto;
+	}
+
+	h2 {
+		color: var(--text-highlight);
+		font-size: var(--text-size-h3);
+		padding-block-start: 1rem;
+		padding-block-end: var(--grid-gap);
+	}
+
+	@media (min-width: 768px) {
+		.options {
+			flex-direction: row;
+		}
 	}
 </style>

@@ -28,7 +28,7 @@ Prerequisites:
 1. Clone the repository
    - If storage is a concern, You only need `compose.yaml`, `container/Caddyfile` and `.env`.
    - Alternatively, you can clone the repo with limited history:
-     - Command: `git clone --depth 1 https://github.com/flurbudurbur/kurosearch.git`
+     - Command: `git clone --depth 1 https://github.com/flur34/flur34.git`
 2. Edit the .env file. Every variable is required! Don't edit the existing ones unless you know what you're doing.
 3. Run `docker compose up -d`
 

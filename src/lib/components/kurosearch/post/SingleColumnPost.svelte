@@ -50,5 +50,6 @@
 	.post {
 		position: relative;
 		container-type: inline-size;
+		list-style: none;
 	}
 </style>

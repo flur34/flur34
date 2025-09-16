@@ -35,7 +35,7 @@ services:
   kurosearch:
     container_name: 'kurosearch'
     restart: unless-stopped
-    image: 'ghcr.io/flurbudurbur/kurosearch:latest'
+    image: 'ghcr.io/flur34/flur34:latest'
     ports:
       - '127.0.0.1:8080:8080'
     env_file:

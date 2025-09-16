@@ -23,6 +23,14 @@ i.codicon {
 	height: 16px;
 }
 
+.codicon-notebook:before {
+	content: '\ebaf';
+}
+
+.codicon-bookmark:before {
+	content: '\eaa5';
+}
+
 .codicon-server:before {
 	content: '\eb50';
 }
