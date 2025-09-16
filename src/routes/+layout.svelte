@@ -23,7 +23,7 @@
 		children?: import('svelte').Snippet;
 	}
 
-	const sponsorlink: string = env['PUBLIC_SPONSOR_LINK'] ?? 'https://ko-fi.com/flurbudurbur';
+	const sponsorlink: string = env['PUBLIC_SPONSOR_URL'] ?? 'https://ko-fi.com/flurbudurbur';
 
 	let { children }: Props = $props();
 

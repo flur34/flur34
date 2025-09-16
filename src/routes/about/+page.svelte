@@ -6,7 +6,7 @@
 	import IconLink from '$lib/components/pure/icon-link/IconLink.svelte';
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
 	import { onMount } from 'svelte';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 	import { LATEST_RELEASE_URL } from '$lib/logic/api-client/url';
 	import { LATEST_KUROSEARCH_VERSION } from '$lib/logic/version-utils';
 

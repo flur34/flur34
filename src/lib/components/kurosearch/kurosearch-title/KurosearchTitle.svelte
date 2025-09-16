@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 
 	const now = new Date();
 	const getTitle = (date: Date) => {
