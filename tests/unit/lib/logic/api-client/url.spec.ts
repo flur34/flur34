@@ -11,14 +11,12 @@ describe('api-client/url constants', () => {
 		expect(R34_API_URL).toBe('https://api.rule34.xxx/');
 	});
 	it('SOURCE_API_URL', () => {
-		expect(SOURCE_API_URL).toBe('https://api.github.com/repos/flurbudurbur/kurosearch');
+		expect(SOURCE_API_URL).toBe('https://api.github.com/repos/flur34/flur34');
 	});
 	it('RELEASES_URL', () => {
-		expect(RELEASES_URL).toBe('https://api.github.com/repos/flurbudurbur/kurosearch/releases');
+		expect(RELEASES_URL).toBe('https://api.github.com/repos/flur34/flur34/releases');
 	});
 	it('LATEST_RELEASE_URL', () => {
-		expect(LATEST_RELEASE_URL).toBe(
-			'https://api.github.com/repos/flurbudurbur/kurosearch/releases/latest'
-		);
+		expect(LATEST_RELEASE_URL).toBe('https://api.github.com/repos/flur34/flur34/releases/latest');
 	});
 });

@@ -33,10 +33,7 @@ test('footer has expected links and texts', async ({ page }) => {
 	await expect(sourceCode).toHaveAttribute('href', 'https://github.com/kurozenzen/kurosearch');
 	await expect(sourceCode).toHaveAttribute('target', '_blank');
 
-	await expect(sourceCodeDocker).toHaveAttribute(
-		'href',
-		'https://github.com/flurbudurbur/kurosearch'
-	);
+	await expect(sourceCodeDocker).toHaveAttribute('href', 'https://github.com/flur34/flur34');
 	await expect(sourceCodeDocker).toHaveAttribute('target', '_blank');
 
 	await expect(about).toHaveAttribute('href', '/about');

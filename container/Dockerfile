@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Common args
-ARG PNPM_VERSION=10.15.1
+ARG PNPM_VERSION=10.16.0
 ARG PLAYWRIGHT_BROWSERS="chromium"
 ARG PROJECT_VERSION=1.0.1
 
@@ -82,10 +82,10 @@ ARG PROJECT_VERSION
 ARG PNPM_VERSION
 
 LABEL author=flurbudurbur \
-    org.opencontainers.image.title="kurosearch" \
+    org.opencontainers.image.title="flur34" \
     org.opencontainers.image.description="A self-contained version of kurosearch.com" \
     org.opencontainers.image.version=${PROJECT_VERSION} \
-    org.opencontainers.image.source="https://github.com/flurbudurbur/kurosearch" \
+    org.opencontainers.image.source="https://github.com/flur34/flur34" \
     org.opencontainers.image.authors="flurbudurbur 69259138+flurbudurbur@users.noreply.github.com"
 
 ENV NODE_ENV=production \
