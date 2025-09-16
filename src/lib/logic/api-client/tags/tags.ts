@@ -1,7 +1,6 @@
 import { replaceHtmlEntities } from '$lib/logic/replace-html-entities';
 import { fetchAbortPrevious } from '../fetchAbortPrevious';
 import { parseJson, parseXml } from '$lib/logic/parse-utils';
-// ... existing code ...
 
 const getTagSuggestionsAbortController: AbortController | null = null;
 const API_ENDPOINT = '/api/tags';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { APP_NAME } from '$lib/logic/app-name.js';
+	import { APP_NAME } from '$lib/logic/app-config.js';
 	import Heading1 from '$lib/components/pure/heading/Heading1.svelte';
 	import Instance from '$lib/components/pure/instance/Instance.svelte';
 	import instanceToml from '/instances.toml?raw';

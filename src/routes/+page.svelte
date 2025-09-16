@@ -24,7 +24,7 @@
 	import pageNavigationEnabled from '$lib/store/page-navigation-enabled-store';
 	import PageNavigation from '$lib/components/kurosearch/page-navigation/PageNavigation.svelte';
 	import PageJump from '$lib/components/kurosearch/page-navigation/PageJump.svelte';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 
 	let loading = $state(false);
 	let error: Error | undefined = $state();

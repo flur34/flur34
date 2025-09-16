@@ -1,4 +1,3 @@
-// ... existing code ...
 export const videoObserver: Pick<IntersectionObserver, 'observe' | 'unobserve'> =
 	typeof IntersectionObserver !== 'undefined'
 		? new IntersectionObserver(

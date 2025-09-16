@@ -7,7 +7,7 @@
 	import SummaryCard from '$lib/components/pure/summary-card/SummaryCard.svelte';
 	import { MODIFIERS_ICONS } from '$lib/logic/tag-modifier-data';
 	import { createModifiedTag, createTag } from '$lib/logic/tag-utils';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config.js';
 </script>
 
 <svelte:head>

@@ -18,7 +18,7 @@
 	import SettingsLink from '$lib/components/kurosearch/settings-link/SettingsLink.svelte';
 	import defaultUserSrc from '$lib/assets/default-user.png';
 	import { resolve } from '$app/paths';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 
 	const tagTypeLetters = Object.fromEntries(
 		Object.keys(TAG_TYPES_WITH_ICONS).map((t) => [t, t.charAt(0)])
