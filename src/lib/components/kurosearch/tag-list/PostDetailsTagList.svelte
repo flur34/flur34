@@ -7,18 +7,39 @@
 	}
 
 	let { tags }: Props = $props();
+
+	const getNextModifier = (
+		currentModifier?: kurosearch.TagModifier
+	): kurosearch.TagModifier | null => {
+		switch (currentModifier) {
+			case undefined:
+				return '+';
+			case '+':
+				return '~';
+			case '~':
+				return '-';
+			case '-':
+				return null; // Remove tag on next click
+			default:
+				return '+';
+		}
+	};
 </script>
 
 <ul class="tags">
 	{#each tags as tag}
-		{@const active = $activeTagsStore.find((t) => t.name === tag.name) !== undefined}
+		{@const activeTag = $activeTagsStore.find((t) => t.name === tag.name)}
 		<SimpleTag
 			{tag}
-			onclick={() =>
-				active
-					? activeTagsStore.removeByName(tag.name)
-					: activeTagsStore.addOrReplace({ ...tag, modifier: '+' })}
-			{active}
+			onclick={() => {
+				const nextModifier = getNextModifier(activeTag?.modifier);
+				if (nextModifier === null) {
+					activeTagsStore.removeByName(tag.name);
+				} else {
+					activeTagsStore.addOrReplace({ ...tag, modifier: nextModifier });
+				}
+			}}
+			modifier={activeTag?.modifier}
 		/>
 	{/each}
 </ul>

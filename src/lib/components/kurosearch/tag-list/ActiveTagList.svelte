@@ -12,11 +12,41 @@
 	}
 
 	let { tags, oncontextmenu, onclick, oncreateSupertag: createSupertag }: Props = $props();
+
+	// Define modifier order priority
+	const getModifierPriority = (modifier: kurosearch.TagModifier): number => {
+		switch (modifier) {
+			case '+': return 0;
+			case '~': return 1;
+			case '-': return 2;
+			default: return 0;
+		}
+	};
+
+	// Sort tags by modifier first, then alphabetically by name
+	let sortedTags = $derived(
+		[...tags].sort((a, b) => {
+			// Get modifier for each tag (supertags have '+' modifier)
+			const modifierA = 'description' in a ? '+' : a.modifier;
+			const modifierB = 'description' in b ? '+' : b.modifier;
+
+			// First sort by modifier priority
+			const priorityA = getModifierPriority(modifierA);
+			const priorityB = getModifierPriority(modifierB);
+
+			if (priorityA !== priorityB) {
+				return priorityA - priorityB;
+			}
+
+			// Then sort alphabetically by name
+			return a.name.localeCompare(b.name);
+		})
+	);
 </script>
 
 <ul>
 	{#if tags.length > 0}
-		{#each tags as tag}
+		{#each sortedTags as tag}
 			{#if 'description' in tag}
 				<DetailedTag
 					tag={{ name: tag.name, type: 'supertag', modifier: '+', count: tag.tags.length }}
@@ -48,11 +78,11 @@
 </ul>
 
 <style lang="scss">
-	ul {
-		min-height: var(--line-height-small);
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--small-gap);
-		justify-content: center;
-	}
+  ul {
+    min-height: var(--line-height-small);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--small-gap);
+    justify-content: center;
+  }
 </style>
