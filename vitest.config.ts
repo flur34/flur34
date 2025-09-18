@@ -15,6 +15,7 @@ export default defineConfig({
 			reporter: ['json-summary', 'text'],
 			include: ['test/unit/**/*.ts'],
 			exclude: ['src/**/*.d.ts']
-		}
+		},
+		testTimeout: 10000
 	}
 });

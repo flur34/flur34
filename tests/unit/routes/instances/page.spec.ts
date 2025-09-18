@@ -5,7 +5,7 @@ import InstancesPage from '$routes/instances/+page.svelte';
 vi.mock('$env/dynamic/public', () => ({
 	env: {
 		PUBLIC_APP_NAME: 'flur34',
-		PUBLIC_SOURCE_URL: 'https://github.com/flur34/flur34',
+		PUBLIC_SOURCE_CODE_URL: 'https://github.com/flur34/flur34',
 		PUBLIC_DISCORD_URL: 'https://discord.gg/AxUnC7n9ZP',
 		PUBLIC_SPONSOR_URL: 'https://ko-fi.com/flurbudurbur'
 	}

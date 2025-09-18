@@ -119,7 +119,7 @@
 </script>
 
 <svelte:head>
-	<title>{APP_NAME} - Rule34 Hentai</title>
+	<title>{APP_NAME} - Rule34 browser</title>
 	<meta
 		name="description"
 		content="Simple and powerful Rule34 browsing site with a focus on simplicity and user experience."

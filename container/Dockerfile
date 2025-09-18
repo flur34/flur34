@@ -3,7 +3,7 @@
 # Common args
 ARG PNPM_VERSION=10.16.0
 ARG PLAYWRIGHT_BROWSERS="chromium"
-ARG PROJECT_VERSION=1.0.1
+ARG PROJECT_VERSION=1.1.0
 
 FROM node:lts-bookworm AS node-tests
 WORKDIR /app
@@ -35,17 +35,15 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
  && pnpm run test:unit
 
 
-FROM node:lts-bookworm AS playwright-tests
-WORKDIR /app
+FROM mcr.microsoft.com/playwright:v1.55.0-noble AS playwright-tests
+WORKDIR /home/pwuser
 
-ARG PLAYWRIGHT_BROWSERS
 ARG PNPM_VERSION
 
 ENV CI=true \
     NODE_ENV=test \
     PNPM_HOME=/root/.local/share/pnpm \
-    PATH="/root/.local/share/pnpm:$PATH" \
-    PLAYWRIGHT_BROWSERS_PATH=0
+    PATH="/root/.local/share/pnpm:$PATH"
 
 RUN corepack enable \
  && corepack prepare pnpm@${PNPM_VERSION} --activate
@@ -53,9 +51,8 @@ RUN corepack enable \
 # reuse previously generated node_modules & workspace
 COPY --from=node-tests /app ./
 
-RUN --mount=type=cache,id=playwright-browsers,target=/app/node_modules/playwright/.local-browsers \
-    pnpm exec playwright install-deps && \
-    pnpm exec playwright install ${PLAYWRIGHT_BROWSERS}
+RUN --mount=type=cache,id=playwright-browsers,target=/app/node_modules/playwright-core/.local-browsers \
+    pnpm exec playwright install --with-deps
 
 RUN pnpm run test:integration
 
@@ -71,10 +68,10 @@ ENV NODE_ENV=production \
 RUN corepack enable \
   && corepack prepare pnpm@${PNPM_VERSION} --activate
 
-COPY --from=playwright-tests /app ./
+COPY --from=playwright-tests /home/pwuser/ ./
 
-RUN pnpm run build \
-    && pnpm --filter=kurosearch deploy --prod /app/prod
+RUN pnpm run build && \
+    pnpm --filter=flur34 deploy --prod /app/prod
 
 FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runtime
 

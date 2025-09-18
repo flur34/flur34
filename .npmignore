@@ -4,6 +4,7 @@
 container
 tests
 test-results
+coverage
 .dockerignore
 .env.example
 .env
