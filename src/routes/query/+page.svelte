@@ -15,7 +15,7 @@
 	import { SearchBuilder } from '$lib/logic/search-builder';
 	import apiKey from '$lib/store/api-key-store';
 	import userId from '$lib/store/user-id-store';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 
 	const fetchSuggestions = async (term: string) => {
 		const matchingTags = await getTagSuggestions(term);

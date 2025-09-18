@@ -1,12 +1,32 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
-const config: PlaywrightTestConfig = {
+export default defineConfig({
 	webServer: {
-		command: 'npm run build && npm run preview',
-		port: 4173
+		command: 'pnpm run dev',
+		port: 5173,
+		timeout: 120 * 1000,
+		/* @ts-expect-error: Process var outside Node.js */
+		reuseExistingServer: !process.env.CI
 	},
 	testDir: 'tests/integration',
-	testMatch: /(.+\.)?(test|spec)\.[jt]s/
-};
-
-export default config;
+	testMatch: /(.+\.)?(test|spec)\.[jt]s/,
+	use: {
+		headless: true,
+		viewport: { width: 1280, height: 720 }
+	},
+	projects: [
+		{
+			name: 'chromium',
+			use: {
+				...devices['Desktop Chrome'],
+				launchOptions: {
+					args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+				}
+			}
+		}
+	],
+	timeout: 60 * 1000,
+	expect: {
+		timeout: 30 * 1000
+	}
+});

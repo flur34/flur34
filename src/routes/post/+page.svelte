@@ -14,7 +14,7 @@
 	import { getPost } from '$lib/logic/api-client/posts/posts';
 	import { getVideoSources, isLoop } from '$lib/logic/media-utils';
 	import alwaysLoop from '$lib/store/always-loop-store';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config.js';
 
 	let idString = $derived(page.url.searchParams.get('id'));
 	let id = $derived(idString ? parseInt(idString) : null);

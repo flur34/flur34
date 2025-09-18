@@ -2,7 +2,7 @@
 	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
 	import cookiesAccepted from '$lib/store/cookies-accepted-store';
 	import LynxMain from '../../../../routes/LynxMain.svelte';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 
 	const accept = () => {
 		$cookiesAccepted = true;

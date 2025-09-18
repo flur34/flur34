@@ -1,20 +1,20 @@
 import { expect, test } from '@playwright/test';
-import { APP_NAME } from '$lib/logic/app-name';
-
-const indexPage = 'http://localhost:4173/';
 
 test('index page has expected title', async ({ page }) => {
-	await page.goto(indexPage);
-	await expect(page).toHaveTitle(APP_NAME + ' - Rule34 Hentai');
+	await page.goto('/');
+	await expect(page).toHaveTitle('flur34 - Rule34 browser');
 });
-// ... existing code ...
-test('header has expected links', async ({ page }) => {
-	await page.goto(indexPage);
 
-	await expect(page.getByTitle('Sponsor')).toHaveAttribute('href', 'https://ko-fi.com/kurozenzen');
+test('header has expected links', async ({ page }) => {
+	await page.goto('/');
+
+	await expect(page.getByTitle('Sponsor')).toHaveAttribute(
+		'href',
+		'https://ko-fi.com/flurbudurbur'
+	);
 	await expect(page.getByTitle('Discord Server')).toHaveAttribute(
 		'href',
-		'https://discord.gg/yyJFG5PVBZ'
+		'https://discord.gg/AxUnC7n9ZP'
 	);
 	await expect(page.getByTitle('Documentation')).toHaveAttribute('href', '/help');
 	await expect(page.getByTitle('Search', { exact: true })).toHaveAttribute('href', '/');
@@ -23,7 +23,7 @@ test('header has expected links', async ({ page }) => {
 });
 
 test('footer has expected links and texts', async ({ page }) => {
-	await page.goto(indexPage);
+	await page.goto('/');
 
 	// Footer links
 	const sourceCode = page.getByTitle('Source Code', { exact: true });
@@ -47,12 +47,3 @@ test('footer has expected links and texts', async ({ page }) => {
 		page.getByText('I do not own the rights to Helheim Lynx', { exact: false })
 	).toBeVisible();
 });
-// ... existing code ...
-// test('adding tag works', async ({ page }) => {
-// 	await page.goto(indexPage);
-
-// 	const modifier = page.getByTestId('select-modifier');
-// 	const searchbar = page.getByTestId('searchbar');
-
-// 	expect(searchbar.innerText).toBe('');
-// });

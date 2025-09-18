@@ -10,7 +10,7 @@
 	import CodiconTextLink from '$lib/components/pure/icon-link/CodiconTextLink.svelte';
 	import theme from '$lib/store/theme-store';
 	import wideLayoutEnabled from '$lib/store/wide-layout-enabled-store';
-	import { env } from '$env/dynamic/public';
+	import { SOURCE_CODE_URL, SPONSOR_URL } from '$lib/logic/app-config';
 
 	import './codicon.css';
 	import './defaults.css';
@@ -22,8 +22,6 @@
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
-
-	const sponsorlink: string = env['PUBLIC_SPONSOR_LINK'] ?? 'https://ko-fi.com/flurbudurbur';
 
 	let { children }: Props = $props();
 
@@ -52,7 +50,7 @@
 
 <header>
 	<nav>
-		<CodiconLink title="Sponsor" href={sponsorlink} icon="codicon codicon-heart" newtab />
+		<CodiconLink title="Sponsor" href={SPONSOR_URL} icon="codicon codicon-heart" newtab />
 		<DiscordLink />
 		<CodiconLink title="Documentation" href={resolve('/help')} icon="codicon codicon-book" />
 		<div></div>
@@ -79,7 +77,7 @@
 			/>
 			<CodiconTextLink
 				title="Source Code Docker"
-				href="https://github.com/flur34/flur34"
+				href={SOURCE_CODE_URL}
 				icon="codicon codicon-github"
 				label="Github KuroSearch Docker"
 				target="_blank"

@@ -13,7 +13,7 @@
 	import supertags from '$lib/store/supertags-store';
 	import savedPosts from '$lib/store/saved-posts-store';
 	import theme from '$lib/store/theme-store';
-	import { APP_NAME } from '$lib/logic/app-name';
+	import { APP_NAME } from '$lib/logic/app-config';
 
 	const reset = () => {
 		supertags.reset();

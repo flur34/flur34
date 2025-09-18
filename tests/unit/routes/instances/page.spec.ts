@@ -2,6 +2,15 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/svelte';
 import InstancesPage from '$routes/instances/+page.svelte';
 
+vi.mock('$env/dynamic/public', () => ({
+	env: {
+		PUBLIC_APP_NAME: 'flur34',
+		PUBLIC_SOURCE_CODE_URL: 'https://github.com/flur34/flur34',
+		PUBLIC_DISCORD_URL: 'https://discord.gg/AxUnC7n9ZP',
+		PUBLIC_SPONSOR_URL: 'https://ko-fi.com/flurbudurbur'
+	}
+}));
+
 // Provide a minimal Web Animations API shim for jsdom
 if (!(Element.prototype as any).animate) {
 	Object.defineProperty(Element.prototype, 'animate', {
