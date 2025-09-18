@@ -16,10 +16,14 @@
 	// Define modifier order priority
 	const getModifierPriority = (modifier: kurosearch.TagModifier): number => {
 		switch (modifier) {
-			case '+': return 0;
-			case '~': return 1;
-			case '-': return 2;
-			default: return 0;
+			case '+':
+				return 0;
+			case '~':
+				return 1;
+			case '-':
+				return 2;
+			default:
+				return 0;
 		}
 	};
 
@@ -78,11 +82,11 @@
 </ul>
 
 <style lang="scss">
-  ul {
-    min-height: var(--line-height-small);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--small-gap);
-    justify-content: center;
-  }
+	ul {
+		min-height: var(--line-height-small);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--small-gap);
+		justify-content: center;
+	}
 </style>
