@@ -1,6 +1,8 @@
 type LongPressParams = {
 	duration?: number;
 	threshold?: number;
+	onlongpress?: () => void;
+	onclick?: (e: MouseEvent) => void;
 };
 
 type LongPressDetail = {
@@ -28,6 +30,8 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 	// Validate and sanitize parameters once
 	let duration = Math.max(50, Number(params.duration) || 300);
 	let threshold = Math.max(0, Number(params.threshold) || 10);
+	let onlongpress = params.onlongpress;
+	let onclick = params.onclick;
 
 	// Use more efficient data types
 	let timer: ReturnType<typeof setTimeout> | null = null;
@@ -35,6 +39,7 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 	let startY = 0;
 	let activePointerId: number | null = null;
 	let isActive = false;
+	let longPressTriggered = false;
 	let abortController: AbortController;
 
 	// Pre-calculate threshold squared to avoid Math.sqrt in hot path
@@ -68,9 +73,11 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 			? event.touches[0].identifier
 			: (event as PointerEvent).pointerId;
 		isActive = true;
+		longPressTriggered = false; // Reset flag
 
 		timer = setTimeout(() => {
 			if (isActive) {
+				longPressTriggered = true; // Set flag before dispatching
 				try {
 					const coords = getCoordinates(startX, startY);
 					const customEvent = new CustomEvent<LongPressDetail>('longpress', {
@@ -83,6 +90,9 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 					});
 					node.dispatchEvent(customEvent);
 					returnCoordinates(coords);
+
+					// Call callback if provided
+					onlongpress?.();
 				} catch (error) {
 					console.warn('Error dispatching longpress event:', error);
 				}
@@ -144,6 +154,20 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 		activePointerId = null;
 	}
 
+	// Enhanced click handler that coordinates with longpress
+	function handleClick(e: MouseEvent): void {
+		if (longPressTriggered) {
+			e.preventDefault();
+			e.stopPropagation();
+			// Reset flag after a short delay
+			setTimeout(() => {
+				longPressTriggered = false;
+			}, 50);
+			return;
+		}
+		onclick?.(e);
+	}
+
 	// Optimized event handlers with minimal allocations
 	const onContextMenu = (e: Event): void => {
 		if (isActive) e.preventDefault();
@@ -189,6 +213,11 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 
 		node.addEventListener('contextmenu', onContextMenu, activeWithSignal);
 
+		// Add click handler if onclick callback is provided
+		if (onclick) {
+			node.addEventListener('click', handleClick, activeWithSignal);
+		}
+
 		// Global listeners
 		document.addEventListener('visibilitychange', onVisibilityChange, activeWithSignal);
 		window.addEventListener('blur', onWindowBlur, activeWithSignal);
@@ -214,6 +243,17 @@ export function longpress(node: HTMLElement, params: LongPressParams = {}) {
 			if (newThreshold !== threshold) {
 				threshold = newThreshold;
 				thresholdSquared = threshold * threshold;
+			}
+
+			// Update callbacks
+			const oldOnclick = onclick;
+			onlongpress = newParams.onlongpress;
+			onclick = newParams.onclick;
+
+			// Re-setup listeners if onclick callback changed
+			if (oldOnclick !== onclick) {
+				abortController?.abort();
+				setupListeners();
 			}
 		},
 

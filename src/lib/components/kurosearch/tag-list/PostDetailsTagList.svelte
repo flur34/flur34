@@ -39,15 +39,19 @@
 					activeTagsStore.addOrReplace({ ...tag, modifier: nextModifier });
 				}
 			}}
+			onLongPress={() => {
+				activeTagsStore.removeByName(tag.name);
+
+			}}
 			modifier={activeTag?.modifier}
-		/>
+			/>
 	{/each}
 </ul>
 
 <style lang="scss">
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-	}
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 </style>
