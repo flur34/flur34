@@ -7,14 +7,18 @@
 	import userId from '$lib/store/user-id-store';
 	import ModifierSelect from '../modifier-select/ModifierSelect.svelte';
 	import Suggestion from './Suggestion.svelte';
+	import TextButton from '$lib/components/pure/text-button/TextButton.svelte';
+	import IconButton from '$lib/components/pure/button-icon/IconButton.svelte';
 
 	interface Props {
 		placeholder: string;
+		loading: boolean;
+		onsubmit: () => void;
 		fetchSuggestions: (searchTerm: string) => Promise<Array<kurosearch.Suggestion>>;
 		onpick: (suggestion: kurosearch.Suggestion & { modifier: kurosearch.TagModifier }) => void;
 	}
 
-	let { placeholder, fetchSuggestions, onpick }: Props = $props();
+	let { placeholder, loading, onsubmit, fetchSuggestions, onpick }: Props = $props();
 
 	let searchTerm = $state('');
 	let previousSearchTerm = $state('');
@@ -133,64 +137,80 @@
 			</div>
 		{/await}
 	</ol>
+	<div class="search-button-wrapper">
+		<TextButton id="btn-search" title="Search with the selected tags" onclick={onsubmit}>
+			{#if loading}
+				<LoadingAnimation />
+			{:else}
+				<IconButton class="codicon codicon-search"></IconButton>
+			{/if}
+		</TextButton>
+	</div>
 </div>
 
 <style lang="scss">
-	.searchbar {
-		display: flex;
-		align-items: center;
-		height: var(--line-height-large);
-		background-color: var(--background-1);
-		padding-inline: calc((var(--line-height-large) - 32px) / 2);
-		border-radius: calc(var(--line-height-large) / 2);
-		width: 100%;
-		max-width: 512px;
-		margin: 0 auto;
-		position: relative;
-		isolation: isolate;
-		z-index: var(--z-searchbar);
-		gap: 8px;
-
-		&.open {
-			border-radius: 22px 22px 0 0;
-			filter: drop-shadow(0px 3px 5px black);
-		}
-
-		input {
-			font-size: var(--text-size);
-			background-color: transparent;
-			border: none;
-			color: var(--text);
-			flex-grow: 1;
-			outline: none;
-			min-width: 0;
-			height: 100%;
-			padding: unset;
-		}
-
-		ol {
-			display: none;
-			box-sizing: border-box;
-			position: absolute;
-			top: var(--line-height-large);
-			left: 0;
-			width: 100%;
-			background-color: var(--background-1);
-			border-radius: 0 0 22px 22px;
-			overflow: hidden;
-			min-height: 22px;
-
-			&.open {
-				display: block;
-			}
-		}
-
-		.suggestion-footer {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 8px;
-			gap: var(--small-gap);
-		}
+	.search-button-wrapper :global(button) {
+		border-radius: 9999px;
+		padding-inline: 0;
+		margin-inline: 0;
+		aspect-ratio: 1;
 	}
+
+  .searchbar {
+    display: flex;
+    align-items: center;
+    height: var(--line-height-large);
+    background-color: var(--background-1);
+    padding-inline: calc((var(--line-height-large) - 32px) / 2);
+    border-radius: calc(var(--line-height-large) / 2);
+    width: 100%;
+    max-width: 512px;
+    margin: 0 auto;
+    position: relative;
+    isolation: isolate;
+    z-index: var(--z-searchbar);
+    gap: 8px;
+
+    &.open {
+      border-radius: 22px 22px 0 0;
+      filter: drop-shadow(0px 3px 5px black);
+    }
+
+    input {
+      font-size: var(--text-size);
+      background-color: transparent;
+      border: none;
+      color: var(--text);
+      flex-grow: 1;
+      outline: none;
+      min-width: 0;
+      height: 100%;
+      padding: unset;
+    }
+
+    ol {
+      display: none;
+      box-sizing: border-box;
+      position: absolute;
+      top: var(--line-height-large);
+      left: 0;
+      width: 100%;
+      background-color: var(--background-1);
+      border-radius: 0 0 22px 22px;
+      overflow: hidden;
+      min-height: 22px;
+
+      &.open {
+        display: block;
+      }
+    }
+
+    .suggestion-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      gap: var(--small-gap);
+    }
+  }
 </style>

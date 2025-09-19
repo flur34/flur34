@@ -1,219 +1,192 @@
 <script lang="ts">
-	import { formatActiveTag } from '$lib/logic/format-tag';
-	import { MODIFIER_NAMES } from '$lib/logic/tag-modifier-data';
+	import { formatTagname } from '$lib/logic/format-tag';
 	import { TAG_TYPES_WITH_ICONS } from '$lib/logic/tag-type-data';
+	import { MODIFIER_TITLES } from '$lib/logic/tag-modifier-data';
+	import { longpress } from '$lib/actions/longpress';
 
 	interface Props {
 		tag: kurosearch.ModifiedTag;
+		onclick?: () => void;
+		oncontextmenu?: () => void;
+		onlongpress?: () => void;
 		active?: boolean;
-		onclick?: (event: MouseEvent) => void;
-		oncontextmenu?: (event: MouseEvent) => void;
 	}
 
-	let { tag, active = false, onclick, oncontextmenu }: Props = $props();
+	let { tag, onclick, oncontextmenu, onlongpress, active = false }: Props = $props();
 
+	// Memoize expensive computations
+	let formattedTagName = $derived(formatTagname(tag.name));
+	let dynamicTitle = $derived(MODIFIER_TITLES[tag.modifier ?? '+']);
 	let icon = $derived(TAG_TYPES_WITH_ICONS[tag.type] ?? 'no-icon');
+
+	const handleLongPress = () => {
+		if (onlongpress) {
+			onlongpress();
+		}
+	};
+
+	const handleContextMenu = (e: MouseEvent) => {
+		if (oncontextmenu) {
+			e.preventDefault();
+			oncontextmenu();
+		}
+	};
 </script>
 
 <li>
 	<button
 		type="button"
-		class:active
-		class:exclude={tag.modifier === '-'}
+		title={dynamicTitle}
+		use:longpress={{
+			duration: 150,
+			threshold: 10,
+			onclick,
+			onlongpress: handleLongPress
+		}}
+		oncontextmenu={handleContextMenu}
+		class:active={active || tag.modifier === '+'}
+		class:negated={tag.modifier === '-'}
 		class:optional={tag.modifier === '~'}
-		class="{MODIFIER_NAMES[tag.modifier]} {icon}"
-		title="Click to remove tag"
-		onclick={(e) => {
-			e.preventDefault();
-			e.stopPropagation();
-			onclick?.(e);
-		}}
-		oncontextmenu={(e) => {
-			e.preventDefault();
-			e.stopPropagation();
-			oncontextmenu?.(e);
-		}}
+		class:supertag={tag.type === 'supertag'}
+		class={icon}
 	>
-		{formatActiveTag(tag)}
+		{formattedTagName}
 	</button>
 </li>
 
 <style lang="scss">
-	@use 'sass:map';
+  @use 'sass:map';
 
-	// SCSS Variables and Maps
-	$tag-height: 24px;
-	$tag-padding-with-icon: 6px 12px;
-	$tag-padding-no-icon: 12px;
-	$tag-border-radius: var(--border-radius);
-	$tag-font-size: var(--text-size-small);
-	$tag-gap: var(--tiny-gap);
+  // Color scheme maps
+  $default-colors: (
+          background: var(--background-2),
+          background-hover: var(--background-3),
+          color: var(--text)
+  );
 
-	// Color scheme maps
-	$default-colors: (
-		background: var(--background-2),
-		background-hover: var(--background-3),
-		color: var(--text)
-	);
+  $accent-colors: (
+          background: var(--accent),
+          background-hover: var(--accent-light),
+          color: var(--text-accent)
+  );
 
-	$accent-colors: (
-		background: var(--accent),
-		background-hover: var(--accent-light),
-		color: var(--text-accent)
-	);
+  $modifier-colors: (
+          active: (
+                  background: var(--tag-active-background),
+                  background-hover: var(--tag-active-background-hover),
+                  color: var(--tag-active-color)
+          ),
+          negated: (
+                  background: var(--tag-negated-background),
+                  background-hover: var(--tag-negated-background-hover),
+                  color: var(--tag-negated-color)
+          ),
+          optional: (
+                  background: var(--tag-optional-background),
+                  background-hover: var(--tag-optional-background-hover),
+                  color: var(--tag-optional-color)
+          )
+  );
 
-	// Modifier-specific color schemes using the CSS variables
-	$modifier-colors: (
-		active: (
-			background: var(--tag-active-background),
-			background-hover: var(--tag-active-background-hover),
-			color: var(--tag-active-color)
-		),
-		exclude: (
-			background: var(--tag-negated-background),
-			background-hover: var(--tag-negated-background-hover),
-			color: var(--tag-negated-color)
-		),
-		optional: (
-			background: var(--tag-optional-background),
-			background-hover: var(--tag-optional-background-hover),
-			color: var(--tag-optional-color)
-		)
-	);
+  $tag-type-colors: (
+          codicon-edit: (
+                  background: var(--artist-background),
+                  background-hover: var(--artist-background-hover),
+                  color: var(--artist-color)
+          ),
+          codicon-person: (
+                  background: var(--character-background),
+                  background-hover: var(--character-background-hover),
+                  color: var(--character-color)
+          ),
+          codicon-folder: (
+                  background: var(--copyright-background),
+                  background-hover: var(--copyright-background-hover),
+                  color: var(--copyright-color)
+          ),
+          codicon-info: (
+                  background: var(--metadata-background),
+                  background-hover: var(--metadata-background-hover),
+                  color: var(--metadata-color)
+          ),
+          codicon-tag: (
+                  background: var(--general-background),
+                  background-hover: var(--general-background-hover),
+                  color: var(--general-color)
+          )
+  );
 
-	$tag-type-colors: (
-		codicon-edit: (
-			background: var(--artist-background),
-			background-hover: var(--artist-background-hover),
-			color: var(--artist-color)
-		),
-		codicon-person: (
-			background: var(--character-background),
-			background-hover: var(--character-background-hover),
-			color: var(--character-color)
-		),
-		codicon-folder: (
-			background: var(--copyright-background),
-			background-hover: var(--copyright-background-hover),
-			color: var(--copyright-color)
-		),
-		codicon-info: (
-			background: var(--metadata-background),
-			background-hover: var(--metadata-background-hover),
-			color: var(--metadata-color)
-		),
-		codicon-tag: (
-			background: var(--general-background),
-			background-hover: var(--general-background-hover),
-			color: var(--general-color)
-		)
-	);
+  // Optimized mixins
+  @mixin tag-base-style {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tag-gap);
+    height: var(--tag-height);
+    border-radius: var(--tag-border-radius);
+    font-size: var(--tag-font-size);
+    user-select: none;
+    padding-inline: 8px 16px;
+    border: none;
+    cursor: pointer;
+    transform: translateZ(0);
+  }
 
-	// SCSS Mixins
-	@mixin tag-base-style {
-		display: inline-flex;
-		align-items: center;
-		gap: $tag-gap;
-		height: $tag-height;
-		border-radius: $tag-border-radius;
-		font-size: $tag-font-size;
-		user-select: none;
-		padding-inline: $tag-padding-with-icon;
-		border: none;
-		cursor: pointer;
-		contain: content;
-	}
+  @mixin color-scheme($colors) {
+    background-color: map.get($colors, background);
+    color: map.get($colors, color);
+    --bg-hover: #{map.get($colors, background-hover)};
+  }
 
-	@mixin color-scheme($colors) {
-		background-color: map.get($colors, background);
-		color: map.get($colors, color);
-		--background-color: #{map.get($colors, background)};
-		--background-color-hover: #{map.get($colors, background-hover)};
-	}
+  @mixin hover-transition {
+    @media (hover: hover) {
+      will-change: background-color;
+      transition: background-color 150ms ease-out;
 
-	@mixin hover-transition {
-		@media (hover: hover) {
-			transition: background-color var(--default-transition-behaviour);
+      &:hover {
+        background-color: var(--bg-hover);
+      }
+    }
+  }
 
-			&:hover {
-				background-color: var(--background-color-hover);
-			}
-		}
-	}
+  button {
+    @include tag-base-style;
+    @include color-scheme($default-colors);
+    @include hover-transition;
 
-	@mixin active-state {
-		&:active {
-			background-color: var(--background-color);
-		}
-	}
+    &:active {
+      background-color: var(--background-1);
+      transform: translateZ(0) scale(0.98);
+    }
 
-	@mixin modifier-state($modifier-name) {
-		$colors: map.get($modifier-colors, $modifier-name);
-		@include color-scheme($colors);
+    &.no-icon {
+      padding-inline: 16px;
+    }
 
-		// Additional modifier-specific styles using the CSS variables
-		@if $modifier-name == 'optional' {
-			font-style: italic;
-			opacity: var(--tag-optional-opacity);
-		}
+    &.active {
+      @include color-scheme(map.get($modifier-colors, active));
+    }
 
-		@if $modifier-name == 'exclude' {
-			text-decoration: line-through;
-			opacity: var(--tag-negated-opacity);
-		}
-	}
+    &.optional {
+      @include color-scheme(map.get($modifier-colors, optional));
+      font-style: italic;
+      opacity: var(--tag-optional-opacity, 0.7);
+    }
 
-	// Main button styles
-	button {
-		@include tag-base-style;
-		@include color-scheme($default-colors);
-		@include hover-transition;
-		@include active-state;
+    &.negated {
+      @include color-scheme(map.get($modifier-colors, negated));
+      text-decoration: line-through;
+      opacity: var(--tag-negated-opacity, 0.7);
+    }
 
-		// No icon modifier
-		&.no-icon {
-			padding-inline: $tag-padding-no-icon;
-		}
+    &.supertag {
+      @include color-scheme($accent-colors);
+      border: dashed var(--supertag-border-width) var(--text-accent);
+    }
 
-		// Tag modifier states using new color system
-		&.active {
-			@include modifier-state('active');
-		}
-
-		&.optional {
-			@include modifier-state('optional');
-		}
-
-		&.exclude {
-			@include modifier-state('exclude');
-		}
-
-		// Tag type specific colors
-		@each $class, $colors in $tag-type-colors {
-			&.#{$class} {
-				--background-color: #{map.get($colors, background)};
-				--background-color-hover: #{map.get($colors, background-hover)};
-				color: map.get($colors, color);
-
-				// For non-modifier states, use tag type colors directly
-				&:not(.active):not(.optional):not(.exclude) {
-					background-color: map.get($colors, background);
-				}
-			}
-		}
-
-		// When modifier states are applied, they override tag type colors
-		// This ensures modifier colors take precedence
-		&.active,
-		&.optional,
-		&.exclude {
-			// Reset tag type specific colors when modifier is active
-			@each $class, $colors in $tag-type-colors {
-				&.#{$class} {
-					--background-color: var(--background-color);
-					--background-color-hover: var(--background-color-hover);
-				}
-			}
-		}
-	}
+    @each $class, $colors in $tag-type-colors {
+      &.#{$class}:not(.active):not(.optional):not(.negated):not(.supertag) {
+        @include color-scheme($colors);
+      }
+    }
+  }
 </style>

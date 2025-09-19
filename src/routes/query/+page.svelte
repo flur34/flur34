@@ -9,7 +9,7 @@
 	import sort from '$lib/store/sort-store';
 	import filter from '$lib/store/filter-store';
 	import blockedContent from '$lib/store/blocked-content-store';
-	import { nextModifier } from '$lib/logic/modifier-utils';
+	import { getNextModifier } from '$lib/logic/modifier-utils';
 	import supertags from '$lib/store/supertags-store';
 	import activeSupertags from '$lib/store/active-supertags-store';
 	import { SearchBuilder } from '$lib/logic/search-builder';
@@ -111,7 +111,7 @@
 				: activeTags.removeByName(tag.name)}
 		oncontextmenu={(tag) => {
 			if (!('description' in tag)) {
-				tag.modifier = nextModifier(tag.modifier);
+				tag.modifier = getNextModifier(tag.modifier);
 				activeTags.addOrReplace(tag);
 			}
 		}}

@@ -3,29 +3,17 @@
 	import DetailedTag from '../tag-detailed/DetailedTag.svelte';
 	import ShareButton from '../button-share/ShareButton.svelte';
 	import { supportsUrlSharing } from '$lib/logic/feature-support';
+	import { getIndexOfModifier } from '$lib/logic/modifier-utils';
 
 	interface Props {
 		tags: Array<kurosearch.ModifiedTag | kurosearch.Supertag>;
 		oncontextmenu: (tag: kurosearch.ModifiedTag | kurosearch.Supertag) => void;
 		onclick: (tag: kurosearch.ModifiedTag | kurosearch.Supertag) => void;
+		onlongpress?: (tag: kurosearch.ModifiedTag | kurosearch.Supertag) => void;
 		oncreateSupertag?: (tags: Array<kurosearch.ModifiedTag | kurosearch.Supertag>) => void;
 	}
 
-	let { tags, oncontextmenu, onclick, oncreateSupertag: createSupertag }: Props = $props();
-
-	// Define modifier order priority
-	const getModifierPriority = (modifier: kurosearch.TagModifier): number => {
-		switch (modifier) {
-			case '+':
-				return 0;
-			case '~':
-				return 1;
-			case '-':
-				return 2;
-			default:
-				return 0;
-		}
-	};
+	let { tags, oncontextmenu, onclick, onlongpress, oncreateSupertag: createSupertag }: Props = $props();
 
 	// Sort tags by modifier first, then alphabetically by name
 	let sortedTags = $derived(
@@ -35,8 +23,8 @@
 			const modifierB = 'description' in b ? '+' : b.modifier;
 
 			// First sort by modifier priority
-			const priorityA = getModifierPriority(modifierA);
-			const priorityB = getModifierPriority(modifierB);
+			const priorityA = getIndexOfModifier(modifierA);
+			const priorityB = getIndexOfModifier(modifierB);
 
 			if (priorityA !== priorityB) {
 				return priorityA - priorityB;
@@ -56,6 +44,7 @@
 					tag={{ name: tag.name, type: 'supertag', modifier: '+', count: tag.tags.length }}
 					onclick={() => onclick(tag)}
 					oncontextmenu={() => oncontextmenu(tag)}
+					onlongpress={onlongpress ? () => onlongpress(tag) : undefined}
 					active
 				/>
 			{:else}
@@ -63,6 +52,7 @@
 					{tag}
 					onclick={() => onclick(tag)}
 					oncontextmenu={() => oncontextmenu(tag)}
+					onlongpress={onlongpress ? () => onlongpress(tag) : undefined}
 					active
 				/>
 			{/if}
