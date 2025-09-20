@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Common args
-ARG PNPM_VERSION=10.16.0
+ARG PNPM_VERSION=10.17.0
 ARG PLAYWRIGHT_BROWSERS="chromium"
 ARG PROJECT_VERSION=1.1.0
 

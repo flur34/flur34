@@ -4,6 +4,7 @@
 	import ShareButton from '../button-share/ShareButton.svelte';
 	import { supportsUrlSharing } from '$lib/logic/feature-support';
 	import { getIndexOfModifier } from '$lib/logic/modifier-utils';
+	import activeTagsStore from '$lib/store/active-tags-store';
 
 	interface Props {
 		tags: Array<kurosearch.ModifiedTag | kurosearch.Supertag>;
@@ -13,7 +14,13 @@
 		oncreateSupertag?: (tags: Array<kurosearch.ModifiedTag | kurosearch.Supertag>) => void;
 	}
 
-	let { tags, oncontextmenu, onclick, onlongpress, oncreateSupertag: createSupertag }: Props = $props();
+	let {
+		tags,
+		oncontextmenu,
+		onclick,
+		onlongpress,
+		oncreateSupertag: createSupertag
+	}: Props = $props();
 
 	// Sort tags by modifier first, then alphabetically by name
 	let sortedTags = $derived(
@@ -34,6 +41,10 @@
 			return a.name.localeCompare(b.name);
 		})
 	);
+
+	const clearSelection = () => {
+		activeTagsStore.reset();
+	};
 </script>
 
 <ul>
@@ -65,6 +76,14 @@
 				<i class="codicon codicon-star-full"></i>
 			</TagButton>
 		{/if}
+		{#if tags.length > 0}
+			<TagButton
+				title="Clear the current selection."
+				onclick={() => clearSelection()}
+			>
+				<i class="codicon codicon-trashcan"></i>
+			</TagButton>
+		{/if}
 		{#if supportsUrlSharing()}
 			<ShareButton />
 		{/if}
@@ -72,11 +91,11 @@
 </ul>
 
 <style lang="scss">
-	ul {
-		min-height: var(--line-height-small);
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--small-gap);
-		justify-content: center;
-	}
+  ul {
+    min-height: var(--line-height-small);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--small-gap);
+    justify-content: center;
+  }
 </style>

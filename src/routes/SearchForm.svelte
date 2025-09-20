@@ -83,8 +83,8 @@
 	<KurosearchTitle />
 	<Searchbar
 		placeholder="Search for tags"
-		loading={loading}
-		onsubmit={onsubmit}
+		{loading}
+		{onsubmit}
 		{fetchSuggestions}
 		onpick={async (suggestion) => {
 			if (suggestion.type === 'supertag') {
@@ -120,9 +120,8 @@
 		}}
 		onlongpress={(tag) => {
 			if (!('description' in tag)) {
-					tag.modifier = getNextModifier(tag.modifier);
-					activeTags.addOrReplace(tag);
-
+				tag.modifier = getNextModifier(tag.modifier);
+				activeTags.addOrReplace(tag);
 			}
 		}}
 		oncreateSupertag={() => {
@@ -139,11 +138,11 @@
 />
 
 <style lang="scss">
-  section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--grid-gap);
-    padding-inline: var(--small-gap);
-  }
+	section {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--grid-gap);
+		padding-inline: var(--small-gap);
+	}
 </style>

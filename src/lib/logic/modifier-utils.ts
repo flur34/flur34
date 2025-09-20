@@ -23,4 +23,4 @@ export const getNextModifierNullable = (modifier: kurosearch.NullableTagModifier
 };
 
 export const getIndexOfModifier = (modifier: kurosearch.NullableTagModifier) =>
-	(modifier === undefined) ? 0 : MODIFIER_ORDER.indexOf(modifier as any);
+	modifier === undefined ? 0 : MODIFIER_ORDER.indexOf(modifier as any);

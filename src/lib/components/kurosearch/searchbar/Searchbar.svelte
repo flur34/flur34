@@ -142,7 +142,7 @@
 			{#if loading}
 				<LoadingAnimation />
 			{:else}
-				<IconButton class="codicon codicon-search"></IconButton>
+				<IconButton aria-label="Search with the selected tags" onclick={onsubmit} variant="transparent" class="codicon codicon-search"></IconButton>
 			{/if}
 		</TextButton>
 	</div>
@@ -156,61 +156,61 @@
 		aspect-ratio: 1;
 	}
 
-  .searchbar {
-    display: flex;
-    align-items: center;
-    height: var(--line-height-large);
-    background-color: var(--background-1);
-    padding-inline: calc((var(--line-height-large) - 32px) / 2);
-    border-radius: calc(var(--line-height-large) / 2);
-    width: 100%;
-    max-width: 512px;
-    margin: 0 auto;
-    position: relative;
-    isolation: isolate;
-    z-index: var(--z-searchbar);
-    gap: 8px;
+	.searchbar {
+		display: flex;
+		align-items: center;
+		height: var(--line-height-large);
+		background-color: var(--background-1);
+		padding-inline: calc((var(--line-height-large) - 32px) / 2);
+		border-radius: calc(var(--line-height-large) / 2);
+		width: 100%;
+		max-width: 512px;
+		margin: 0 auto;
+		position: relative;
+		isolation: isolate;
+		z-index: var(--z-searchbar);
+		gap: 8px;
 
-    &.open {
-      border-radius: 22px 22px 0 0;
-      filter: drop-shadow(0px 3px 5px black);
-    }
+		&.open {
+			border-radius: 22px 22px 0 0;
+			filter: drop-shadow(0px 3px 5px black);
+		}
 
-    input {
-      font-size: var(--text-size);
-      background-color: transparent;
-      border: none;
-      color: var(--text);
-      flex-grow: 1;
-      outline: none;
-      min-width: 0;
-      height: 100%;
-      padding: unset;
-    }
+		input {
+			font-size: var(--text-size);
+			background-color: transparent;
+			border: none;
+			color: var(--text);
+			flex-grow: 1;
+			outline: none;
+			min-width: 0;
+			height: 100%;
+			padding: unset;
+		}
 
-    ol {
-      display: none;
-      box-sizing: border-box;
-      position: absolute;
-      top: var(--line-height-large);
-      left: 0;
-      width: 100%;
-      background-color: var(--background-1);
-      border-radius: 0 0 22px 22px;
-      overflow: hidden;
-      min-height: 22px;
+		ol {
+			display: none;
+			box-sizing: border-box;
+			position: absolute;
+			top: var(--line-height-large);
+			left: 0;
+			width: 100%;
+			background-color: var(--background-1);
+			border-radius: 0 0 22px 22px;
+			overflow: hidden;
+			min-height: 22px;
 
-      &.open {
-        display: block;
-      }
-    }
+			&.open {
+				display: block;
+			}
+		}
 
-    .suggestion-footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 8px;
-      gap: var(--small-gap);
-    }
-  }
+		.suggestion-footer {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 8px;
+			gap: var(--small-gap);
+		}
+	}
 </style>
